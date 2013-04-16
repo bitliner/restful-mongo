@@ -10,6 +10,7 @@
     "type": "git",
     "url": "https://github.com/bitliner/restful-mongo"
   },
+  "dependencies": { "mongodb": ">= 0.9.2"},
   "keywords": [
     "mongo",
     "mongodb",
