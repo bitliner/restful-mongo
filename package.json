@@ -1,6 +1,6 @@
 {
   "name": "restful-mongo",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Add easily RESTful API to use with Mongo",
   "main": "index.js",
   "scripts": {
@@ -22,6 +22,12 @@
     "restful",
     "crud"
   ],
+  "scripts":{
+    "test":"grunt --gruntfile Gruntfile.js",
+    "travis-cov":{
+      "threshold":100
+    }
+  },
   "author": "bitliner",
   "license": "BSD"
 }
