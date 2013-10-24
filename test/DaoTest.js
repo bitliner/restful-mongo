@@ -51,7 +51,7 @@ describe('TEST', function() {
 
 
 				expect(err).to.be.eql(null)
-				expect(doc).to.have.property('saluto','ciao')
+				expect(doc).to.have.property('saluto', 'ciao')
 
 				done()
 			})
@@ -77,8 +77,8 @@ describe('TEST', function() {
 		it('By field', function(done) {
 
 			dao.query('restfulMongo', 'saluti', {}, {}, {
-				hint:{
-					saluto:1
+				hint: {
+					saluto: 1
 				}
 			}, function(err, docs) {
 
@@ -95,19 +95,19 @@ describe('TEST', function() {
 		it('By field', function(done) {
 
 			dao.queryAsCursor('restfulMongo', 'saluti', {}, {}, {}, function(err, cursor) {
-				var lengthOfCursor=0;
-				
-				cursor.each(function(err,item){
-					if (item==null){
-						expect(lengthOfCursor).to.be.eql(2)		
+				var lengthOfCursor = 0;
+
+				cursor.each(function(err, item) {
+					if(item == null) {
+						expect(lengthOfCursor).to.be.eql(2)
 						expect(err).to.be.eql(null)
 						done()
-					}else{
+					} else {
 						lengthOfCursor++
 					}
 
 				})
-				
+
 			})
 		})
 	})
@@ -118,26 +118,81 @@ describe('TEST', function() {
 		it('By field', function(done) {
 
 			dao.queryAsCursor('restfulMongo', 'saluti', {}, {}, {
-				hint:{
-					saluto:1
+				hint: {
+					saluto: 1
 				}
 			}, function(err, cursor) {
-				var lengthOfCursor=0;
-				
-				cursor.each(function(err,item){
-					if (item==null){
-						expect(lengthOfCursor).to.be.eql(2)		
+				var lengthOfCursor = 0;
+
+				cursor.each(function(err, item) {
+					if(item == null) {
+						expect(lengthOfCursor).to.be.eql(2)
 						expect(err).to.be.eql(null)
 						done()
-					}else{
+					} else {
 						lengthOfCursor++
 					}
 
 				})
-				
+
 			})
 		})
 	})
+
+	describe('DAO queryAsCursor with batchSize', function() {
+		var oneMilionOfObjects, number;
+
+		beforeEach(function(done) {
+			oneMilionOfObjects = []
+			number = 10000;
+			for(var i = 0; i < number; i++) {
+				oneMilionOfObjects.push({
+					saluto: 'ciao'
+				})
+			}
+
+			dao = new RestfulMongo({
+				url: 'mongodb://rest:ful@localhost:27017/restfulMongo'
+			}).getDao()
+
+			new DbPopulator({
+				databaseName: 'restfulMongo',
+				data: {
+					saluti: oneMilionOfObjects
+				},
+				user: 'rest',
+				password: 'ful'
+			}).execute().then(function() {
+				console.log('DbPopulator executed')
+				done()
+			})
+
+		})
+
+		it('By field', function(done) {
+
+
+			dao.queryAsCursor('restfulMongo', 'saluti', {}, {}, {
+				batchSize: 100
+			}, function(err, cursor) {
+				var lengthOfCursor = 0;
+
+				cursor.each(function(err, item) {
+					if(item == null) {
+						console.log('ola', lengthOfCursor);
+						expect(lengthOfCursor).to.be.eql(number)
+						expect(err).to.be.eql(null)
+						done()
+					} else {
+						lengthOfCursor++
+					}
+
+				})
+
+			})
+		})
+	})
+
 
 
 })

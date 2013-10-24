@@ -7,7 +7,8 @@ grunt.initConfig({
   mochaTest: {
     test: {
       options: {
-        reporter: 'spec'
+        reporter: 'spec',
+        timeout:1000000
       },
       src: ['test/*.js']
     },
