@@ -8,7 +8,7 @@ grunt.initConfig({
     test: {
       options: {
         reporter: 'spec',
-        timeout:1000000
+        timeout: 1000000
       },
       src: ['test/*.js']
     },

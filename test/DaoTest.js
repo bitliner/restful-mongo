@@ -193,6 +193,43 @@ describe('TEST', function() {
 		})
 	})
 
+	describe('DAO remove', function() {
+		var dataForRemove;
+		beforeEach(function(done) {
+			dataForRemove = {
+				saluti: [{
+					saluto: 'ciao',
+				}, {
+					saluto: 'ciao',
+				}, {
+					saluto: 'ola'
+				}]
+			}
+			new DbPopulator({
+				databaseName: 'restfulMongo',
+				data: dataForRemove,
+				user: 'rest',
+				password: 'ful'
+			}).execute().then(function() {
+				console.log('DbPopulator executed')
+				done()
+			})
+		})
 
+		it('Test remove more than one element', function(done) {
+			dao.remove('restfulMongo', 'saluti', {
+				saluto: 'ciao'
+			}, {}, function(err, numberOfRemoved) {
+				expect(err).to.be.eql(null)
+				expect(numberOfRemoved).to.be.eql(2)
+
+				dao.query('restfulMongo', 'saluti', {}, {}, {}, function(err, docs) {
+					expect(docs.length).to.be.eql(1)
+					done()
+				})
+			})
+		})
+
+	})
 
 })
