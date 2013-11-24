@@ -23,10 +23,7 @@
     "crud"
   ],
   "scripts":{
-    "test":"grunt --gruntfile Gruntfile.js",
-    "travis-cov":{
-      "threshold":100
-    }
+    "test":"grunt --gruntfile Gruntfile.js"
   },
   "author": "bitliner",
   "license": "BSD"
