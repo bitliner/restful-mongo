@@ -29,9 +29,7 @@ describe('TEST', function() {
 			var options={
 				DATABASE_NAME:'ciao'
 			}
-			connPool=new ConnPool(options)
-
-			var url=connPool._getConnectionUrl(options)
+			var url=ConnPool._getConnectionUrl(options)
 
 			expect(url).to.be.eql('mongodb://localhost:27017/ciao')
 			done()
