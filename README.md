@@ -1,61 +1,47 @@
-# RESTful MongoDB
+RESTful MongoDB
+============================
 
-It allows to add easily and quickly RESTful API to your nodejs app, to be used with MongoDB.
+It allows to setup HTTP REST API easily and quickly, to access data stored on MongoDB.
 
-It is based on https://github.com/tdegrunt/mongodb-rest.
 
-## Install and setting
+# Install and setting
 
-* install library `npm install restful-mongo`
-* create a config file in the root of your project, whose content is like this:
-
-```
-
-module.exports = {
-	db: {
-		username: '',
-		password:'',
-		host: 'localhost',
-		port: 27017
-	},
-	"flavor": "nounderscore",
-	"debug": true
-}
+* install express-generator if you do not have it yet, by running `npm install -g express-generator`
+* generate an express app running `express mongo-express` 
+* install dependencies `cd mongo-express && npm install`
+* install restful-mongo `npm install --save restful-mongo`
+* add to app.js, in the section where routes are configured, the following code
 
 ```
-
-* add routers to your app in app.js files
-
-```
-var app = express();
-,	config=require('./config.js')
-,	restfulMongo=require('../../index.js');
-
-restfulMongo.configure(app, config );
-
+var RestfulMongo=require('restful-mongo');
+new RestfulMongo({
+    HOST:'localhost',
+    PORT:27017
+}).configure(app);
 ```
 
-Installation and configuration is completed.
+* start server running `npm start`
+* access browser at `http://localhost:3000/api/test/collectionName` to test the HTTP REST API
 
 
-## Documentation
 
-### GET method
+# Usage - How to access data using Restful Mongo
 
-To get all resources contained in a collection, use the following url:
+You can do the following request
 
-* `/api/database_name/collection_name`
+<big>Get list of collection names of *test1* database </big>
+```
+GET /api/test1/collections HTTP/1.1
+```
+<big>Get all documents of collection *books* of *test1* database </big>
+```
+GET /api/test1/books HTTP/1.1
+```
+<big>Get all documents of collection *books* of *test1* database whose author is *Manzoni*</big>
+```
+GET /api/test1/books?rawQuery={author:{$in:['Manzoni']}} HTTP/1.1
+```
 
-To get a single resource, append _id value to the prevouos url, like the following:
 
-* `/api/database_name/collection_name/_id`
 
-GET method supports the following parameters:
 
-* sort: to sort the results, for example `?sort=-_id,name` sort the results by _id field, in descending order, and then by name, in ascending order
-* fields: to apply projection to the results, for example `?fields=name,_id` returns an array of objects with only 2 fields: name and _id
-* query: to query specific objects, you can specify condition on evenry single object dirrectly as parameters, separated by comma. For example `?name=giovanni,age=18` returns only objects that has 'giovanni' as name and '18' as age. You can specify more complex query too. See below documentation about comples query
-
-### POST method
-### PUT method
-### DELETE method
