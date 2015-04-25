@@ -1,7 +1,7 @@
 RESTful MongoDB
 ============================
 
-It allows to setup HTTP REST API easily and quickly, to access data stored on MongoDB.
+It allows you to setup an HTTP API server to access data stored on MongoDB, easily and quickly.
 
 
 # Install and setup an express server using restful-mongo
