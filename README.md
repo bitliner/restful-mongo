@@ -10,7 +10,7 @@ It allows you to setup an HTTP API server to access data stored on MongoDB, easi
 * `express mongo-express` 
 * `cd mongo-express && npm install`
 * `npm install --save restful-mongo` to install *restful-mongo*
-* add to app.js, in the section where routes are configured, the following code
+* add to *app.js* file, in the section where routes are configured, the following code
 
 ```
 var RestfulMongo=require('restful-mongo');
