@@ -15,8 +15,8 @@ It allows you to setup an HTTP API server to access data stored on MongoDB, easi
 ```
 var RestfulMongo=require('restful-mongo');
 new RestfulMongo({
-    HOST:'localhost',
-    PORT:27017
+    HOST:'localhost',   // host of mongodb server
+    PORT:27017          // port of mongodb server  
 }).configure(app);
 ```
 
