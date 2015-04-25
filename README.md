@@ -25,22 +25,32 @@ new RestfulMongo({
 
 
 
-# Usage - How to access data using Restful Mongo
+# Access data using restful-mongo based http server
 
-You can do the following request
+**You can do the following request**
 
-<big>Get list of collection names of *test1* database </big>
-```
-GET /api/test1/collections HTTP/1.1
-```
-<big>Get all documents of collection *books* of *test1* database </big>
-```
-GET /api/test1/books HTTP/1.1
-```
-<big>Get all documents of collection *books* of *test1* database whose author is *Manzoni*</big>
-```
-GET /api/test1/books?rawQuery={author:{$in:['Manzoni']}} HTTP/1.1
-```
+* 
+ > ```
+ > GET /api/test1/collections HTTP/1.1
+ > ```
+ >
+ > <big>Get list of collection names of *test1* database </big>
+
+* 
+ >```
+ >GET /api/test1/books HTTP/1.1
+ >```
+ >
+ ><big>Get all documents of collection *books* of *test1* database </big>
+
+
+* 
+ >```
+ >GET /api/test1/books?rawQuery={author:{$in:['Manzoni']}} HTTP/1.1
+ >```
+ >
+ ><big>Get all documents of collection *books* of *test1* database whose author is *Manzoni*</big>
+
 
 
 
