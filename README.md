@@ -4,7 +4,7 @@ RESTful MongoDB
 It allows to setup HTTP REST API easily and quickly, to access data stored on MongoDB.
 
 
-# Install and setting
+# Install and setup an express server using restful-mongo
 
 * install express-generator if you do not have it yet, by running `npm install -g express-generator`
 * generate an express app running `express mongo-express` 
@@ -25,7 +25,7 @@ new RestfulMongo({
 
 
 
-# Access data using restful-mongo based http server
+# Example of HTTP request
 
 **You can do the following request**
 
