@@ -9,7 +9,7 @@ It allows you to setup an HTTP API server to access data stored on MongoDB, easi
 * `npm install -g express-generator`
 * `express mongo-express` 
 * `cd mongo-express && npm install`
-* `npm install --save restful-mongo` to install
+* `npm install --save restful-mongo` to install *restful-mongo*
 * add to app.js, in the section where routes are configured, the following code
 
 ```
