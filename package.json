@@ -1,6 +1,6 @@
 {
   "name": "restful-mongo",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "description": "Add easily RESTful API to use with Mongo",
   "main": "index.js",
   "scripts": {
