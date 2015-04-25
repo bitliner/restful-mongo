@@ -6,9 +6,9 @@ It allows you to setup an HTTP API server to access data stored on MongoDB, easi
 
 # Install and setup an express server using restful-mongo
 
-* install express-generator if you do not have it yet, by running `npm install -g express-generator`
-* generate an express app running `express mongo-express` 
-* install dependencies `cd mongo-express && npm install`
+* `npm install -g express-generator`
+* `express mongo-express` 
+* `cd mongo-express && npm install`
 * install restful-mongo `npm install --save restful-mongo`
 * add to app.js, in the section where routes are configured, the following code
 
@@ -20,7 +20,7 @@ new RestfulMongo({
 }).configure(app);
 ```
 
-* start server running `npm start`
+* `npm start`
 * access browser at `http://localhost:3000/api/test/collectionName` to test the HTTP REST API
 
 
