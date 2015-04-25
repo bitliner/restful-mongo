@@ -27,7 +27,7 @@ new RestfulMongo({
 
 # Example of HTTP request
 
-**You can do the following request**
+**You can do following requests**:
 
 * 
  > ```
