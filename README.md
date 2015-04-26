@@ -15,8 +15,8 @@ It allows you to setup an HTTP API server to access data stored on MongoDB, easi
 ```
 var RestfulMongo=require('restful-mongo');
 new RestfulMongo({
-    HOST:'localhost',   // host of mongodb server
-    PORT:27017          // port of mongodb server  
+    HOST:'localhost',   // host of mongodb server, OPTIONAL
+    PORT:27017          // port of mongodb server, OPTIONAL  
 }).configure(app);
 ```
 
@@ -31,14 +31,14 @@ new RestfulMongo({
 
 * 
  > ```
- > GET /api/test1/collections HTTP/1.1
+ > GET /api/localhost:27017/test1/collections HTTP/1.1
  > ```
  >
  > <big>Get list of collection names of *test1* database </big>
 
 * 
  >```
- >GET /api/test1/books HTTP/1.1
+ >GET /api/localhost:27017/test1/books HTTP/1.1
  >```
  >
  ><big>Get all documents of collection *books* of *test1* database </big>
@@ -46,12 +46,14 @@ new RestfulMongo({
 
 * 
  >```
- >GET /api/test1/books?rawQuery={author:{$in:['Manzoni']}} HTTP/1.1
+ >GET /api/localhost:27017/test1/books?rawQuery={author:{$in:['Manzoni']}} HTTP/1.1
  >```
  >
  ><big>Get all documents of collection *books* of *test1* database whose author is *Manzoni*</big>
 
 
+# Disclaimer
 
+* the code behind this module is very old, not so readable, and needs refactoring. Do not consider this code as code that I usually write.
 
 

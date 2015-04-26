@@ -35,8 +35,8 @@ describe('RestfulMongo - Http API', function() {
     beforeEach(function(done) {
         var p1, p2;
         new RestfulMongo({
-            HOST: 'localhost',
-            PORT: 27017
+            // HOST: 'localhost',
+            // PORT: 27017
         }).configure(app);
 
         function mydone() {
