@@ -87,6 +87,19 @@ describe('RestfulMongo - Http API', function() {
                 done();
             });
     });
+    it('GET /api/collections should respond with the whole list of collections', function(done) {
+        request(app)
+            .get('/api/test1/collections')
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end(function(err, res) {
+                if (err) throw err;
+                // console.log('res', res.body);
+                expect(res.body.length).to.be.eql(2);
+                done();
+            });
+    });
     it('GET /?rawQuery should respond with the list of objects that satisfy the query', function(done) {
         var search;
 
