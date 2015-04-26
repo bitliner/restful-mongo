@@ -35,8 +35,8 @@ describe('RestfulMongo - Http API', function() {
     beforeEach(function(done) {
         var p1, p2;
         new RestfulMongo({
-            HOST: 'localhost',
-            PORT: 27017
+            // HOST: 'localhost',
+            // PORT: 27017
         }).configure(app);
 
         function mydone() {
@@ -74,7 +74,7 @@ describe('RestfulMongo - Http API', function() {
 
     it('GET / should respond with the whole list of objects', function(done) {
         request(app)
-            .get('/api/test1/saluti')
+            .get('/api/localhost:27017/test1/saluti')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
@@ -89,7 +89,7 @@ describe('RestfulMongo - Http API', function() {
     });
     it('GET /api/collections should respond with the whole list of collections', function(done) {
         request(app)
-            .get('/api/test1/collections')
+            .get('/api/localhost:27017/test1/collections')
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
@@ -110,7 +110,7 @@ describe('RestfulMongo - Http API', function() {
         search = encodeURIComponent(search);
         search = 'rawQuery=' + search;
         request(app)
-            .get('/api/test1/saluti?' + search)
+            .get('/api/localhost:27017/test1/saluti?' + search)
         // .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
             .expect(200)
@@ -140,7 +140,7 @@ describe('RestfulMongo - Http API', function() {
                 search = 'rawOptions=' + search;
 
                 request(app)
-                    .get('/api/test1/saluti?' + search)
+                    .get('/api/localhost:27017/test1/saluti?' + search)
                     .set('Accept', 'application/json')
                     .expect('Content-Type', /json/)
                     .expect(200)
@@ -167,7 +167,7 @@ describe('RestfulMongo - Http API', function() {
                 search = 'rawOptions=' + search;
 
                 request(app)
-                    .get('/api/test1/saluti?' + search)
+                    .get('/api/localhost:27017/test1/saluti?' + search)
                     .set('Accept', 'application/json')
                     .expect('Content-Type', /json/)
                     .expect(200)

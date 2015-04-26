@@ -39,7 +39,7 @@ describe('TEST', function() {
 
         it('should get one object', function(done) {
 
-            dao.get('test', 'saluti', {
+            dao.get('localhost:27017', 'test', 'saluti', {
                 saluto: 'ciao'
             }, {}, {}, function(err, doc) {
 
@@ -56,7 +56,7 @@ describe('TEST', function() {
 
         it('should return the whole list of objects', function(done) {
 
-            dao.query('test', 'saluti', {}, {}, {}, function(err, docs) {
+            dao.query('localhost:27017', 'test', 'saluti', {}, {}, {}, function(err, docs) {
 
                 expect(err).to.be.eql(null)
                 expect(docs.length).to.be.eql(2)
@@ -70,7 +70,7 @@ describe('TEST', function() {
 
         it('shoudl return the whole of objects', function(done) {
 
-            dao.query('test', 'saluti', {}, {}, {
+            dao.query('localhost:27017', 'test', 'saluti', {}, {}, {
                 hint: {
                     saluto: 1
                 }
@@ -88,7 +88,7 @@ describe('TEST', function() {
 
         it('By field', function(done) {
 
-            dao.queryAsCursor('test', 'saluti', {}, {}, {}, function(err, cursor) {
+            dao.queryAsCursor('localhost:27017', 'test', 'saluti', {}, {}, {}, function(err, cursor) {
                 var lengthOfCursor = 0;
 
                 cursor.each(function(err, item) {
@@ -111,7 +111,7 @@ describe('TEST', function() {
 
         it('By field', function(done) {
 
-            dao.queryAsCursor('test', 'saluti', {}, {}, {
+            dao.queryAsCursor('localhost:27017', 'test', 'saluti', {}, {}, {
                 hint: {
                     saluto: 1
                 }
@@ -164,7 +164,7 @@ describe('TEST', function() {
         it('By field', function(done) {
 
 
-            dao.queryAsCursor('test', 'saluti', {}, {}, {
+            dao.queryAsCursor('localhost:27017', 'test', 'saluti', {}, {}, {
                 batchSize: 100
             }, function(err, cursor) {
                 var lengthOfCursor = 0;
@@ -205,13 +205,13 @@ describe('TEST', function() {
         })
 
         it('Test remove more than one element', function(done) {
-            dao.remove('test', 'saluti', {
+            dao.remove('localhost:27017', 'test', 'saluti', {
                 saluto: 'ciao'
             }, {}, function(err, numberOfRemoved) {
                 expect(err).to.be.eql(null)
                 expect(numberOfRemoved).to.be.eql(2)
 
-                dao.query('test', 'saluti', {}, {}, {}, function(err, docs) {
+                dao.query('localhost:27017', 'test', 'saluti', {}, {}, {}, function(err, docs) {
                     expect(docs.length).to.be.eql(1)
                     done()
                 })
