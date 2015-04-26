@@ -36,6 +36,7 @@ new RestfulMongo({
  >
  > <big>Get list of collection names of *test1* database </big>
 
+<br>
 
  >```
  >GET /api/localhost:27017/test1/books HTTP/1.1
@@ -43,7 +44,7 @@ new RestfulMongo({
  >
  ><big>Get all documents of collection *books* of *test1* database </big>
 
-
+<br>
 
  >```
  >GET /api/localhost:27017/test1/books?rawQuery={author:{$in:['Manzoni']}} HTTP/1.1
