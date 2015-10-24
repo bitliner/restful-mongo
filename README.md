@@ -1,7 +1,7 @@
 RESTful MongoDB
 ============================
 
-It allows you to setup an HTTP API server to access data stored on MongoDB, easily and quickly.
+Get an HTTP API server in a bunch of minutes.
 
 
 # Install and setup an express server using restful-mongo
@@ -56,5 +56,17 @@ new RestfulMongo({
 # Disclaimer
 
 * the code behind this module is very old, not so readable, and needs refactoring. Do not consider this code as code that I usually write.
+
+# Contribute
+
+## Test
+
+### Requirements
+
+* a MongoDB instance
+
+### How to run test
+
+`npm test`
 
 
