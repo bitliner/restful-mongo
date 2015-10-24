@@ -4,7 +4,7 @@
   "description": "Add easily RESTful API to use with Mongo",
   "main": "index.js",
   "scripts": {
-    "test": "MONGODB_URL=mongodb://localhost:27017/test grunt --gruntfile Gruntfile.js"
+    "test": "MONGODB_URL=mongodb://localhost:27017/test-db mocha ./test/http-handlers-test.js"
   },
   "repository": {
     "type": "git",
@@ -34,7 +34,7 @@
     "colors": "^1.0.3",
     "dateformat": "^1.0.11",
     "eventemitter2": "^0.4.14",
-    "express": "^4.12.3",
+    "express": "^4.13.3",
     "findup-sync": "^0.2.1",
     "glob": "^5.0.5",
     "grunt-mocha-test": "^0.12.7",
@@ -45,7 +45,7 @@
     "mocha": "^2.2.4",
     "nopt": "^3.0.1",
     "rimraf": "^2.3.2",
-    "supertest": "^0.15.0",
+    "supertest": "^1.1.0",
     "underscore.string": "^3.0.3"
   }
 }

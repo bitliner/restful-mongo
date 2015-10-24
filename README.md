@@ -57,13 +57,13 @@ new RestfulMongo({
 
 * the code behind this module is very old, not so readable, and needs refactoring. Do not consider this code as code that I usually write.
 
-# Contribute
+# Contributing
 
 ## Test
 
 ### Requirements
 
-* a MongoDB instance
+* a MongoDB instance running on `localhost` and listening to port `27017`
 
 ### How to run test
 
