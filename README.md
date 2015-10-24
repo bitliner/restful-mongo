@@ -1,31 +1,32 @@
-RESTful MongoDB
-============================
+# RESTful MongoDB
 
 Get an HTTP API server in a matter of minutes.
 
+## Requirements
 
-# Install and setup an express server using restful-mongo
+* node.js
+* npm
+* express
 
-* `npm install -g express-generator`
-* `express mongo-express` 
-* `cd mongo-express && npm install`
-* `npm install --save restful-mongo` to install *restful-mongo*
-* add to *app.js* file, in the section where routes are configured, the following code
+## Usage
+
+**Example with [express.js](http://expressjs.com/)**
 
 ```
+var express=require('expresss');
 var RestfulMongo=require('restful-mongo');
+
+var app=express();
+
 new RestfulMongo({
     HOST:'localhost',   // host of mongodb server, OPTIONAL
     PORT:27017          // port of mongodb server, OPTIONAL  
 }).configure(app);
 ```
 
-* `npm start`
-* access browser at `http://localhost:3000/api/test/collectionName` to read JSON documents of collection  *collectionName* of database *test1*
 
 
-
-# Example of HTTP requests
+### Example of HTTP requests
 
 **You can do following requests**:	
 
@@ -53,19 +54,19 @@ new RestfulMongo({
  ><big>Get all documents of collection *books* of *test1* database whose author is *Manzoni*</big>
 
 
-# Disclaimer
+## Disclaimer
 
 * the code behind this module is very old, not so readable, and needs refactoring. Do not consider this code as code that I usually write.
 
-# Contributing
+## Contributing
 
-## Test
+### Test
 
-### Requirements
+#### Requirements
 
 * a MongoDB instance running on `localhost` and listening to port `27017`
 
-### How to run test
+#### How to run test
 
 `npm test`
 
