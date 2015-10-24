@@ -1,7 +1,7 @@
 RESTful MongoDB
 ============================
 
-Get an HTTP API server in a bunch of minutes.
+Get an HTTP API server in a matter of minutes.
 
 
 # Install and setup an express server using restful-mongo
