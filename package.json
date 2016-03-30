@@ -2,14 +2,26 @@
   "name": "@bitliner/restful-mongo-utils",
   "version": "0.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "restful-mongo-utils.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -t 10000 ./test/restful-mongo-utils.js"
   },
   "repository": {
     "type": "git",
     "url": "git@bitbucket.org:wonderflow-web-backend/restful-mongo-utils.git"
   },
   "author": "luca <luca@wonderflow.co>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "logb": "0.0.2",
+    "mongodb": "1.4.9"
+  },
+  "devDependencies": {
+    "body-parser": "^1.15.0",
+    "bson-objectid": "^1.1.4",
+    "chai": "^3.5.0",
+    "express": "^4.13.4",
+    "mongo-fixme": "^0.10.1",
+    "supertest": "^1.2.0"
+  }
 }
