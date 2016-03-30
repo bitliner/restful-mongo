@@ -1,0 +1,15 @@
+{
+  "name": "@bitliner/restful-mongo-utils",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:wonderflow-web-backend/restful-mongo-utils.git"
+  },
+  "author": "luca <luca@wonderflow.co>",
+  "license": "MIT"
+}
