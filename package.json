@@ -1,6 +1,6 @@
 {
   "name": "@bitliner/restful-mongo-utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "main": "restful-mongo-utils.js",
   "scripts": {
