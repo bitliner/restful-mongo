@@ -13,12 +13,12 @@
   "author": "luca <luca@wonderflow.co>",
   "license": "MIT",
   "dependencies": {
+    "bson-objectid": "^1.1.4",
     "logb": "0.0.2",
     "mongodb": "1.4.9"
   },
   "devDependencies": {
     "body-parser": "^1.15.0",
-    "bson-objectid": "^1.1.4",
     "chai": "^3.5.0",
     "express": "^4.13.4",
     "mongo-fixme": "^0.10.1",
