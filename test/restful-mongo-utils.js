@@ -37,7 +37,7 @@ describe('restful-mongo-utils', function() {
 
 		it('If the ObjectID is specified should change the name of the selected document', function(done) {
 			request(app)
-				.put('/api/local/users/56fbe4083dfb3cf003caf27f')
+				.put('/api/local/users/56fcc3e197ecb140101d6661')
 				.send(set)
 				.set('Accept', 'application/json')
 				.expect(200)
@@ -61,7 +61,10 @@ describe('restful-mongo-utils', function() {
 					expect(err).to.be.null;
 					expect(res.statusCode).to.equal(200);
 					expect(res.body).to.not.be.undefined;
-					expect(res.body).to.have.length.above(2);
+					expect(res.body).to.have.length.above(1);
+					res.body.forEach(function(item) {
+						expect(item.name).to.equal('newName');
+					});
 					done();	
 				});
 		});
