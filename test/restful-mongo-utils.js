@@ -11,7 +11,7 @@ var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-var fixtures = require('mongo-fixme').connect('local', {
+var fixtures = require('mongo-fixme').connect('test-db', {
 	port: 27101
 });
 
