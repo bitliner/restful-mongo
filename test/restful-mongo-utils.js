@@ -61,10 +61,7 @@ describe('restful-mongo-utils', function() {
 					expect(err).to.be.null;
 					expect(res.statusCode).to.equal(200);
 					expect(res.body).to.not.be.undefined;
-					expect(res.body).to.have.length.above(1);
-					res.body.forEach(function(item) {
-						expect(item.name).to.equal('newName');
-					});
+					expect(res.body).to.be.above(1);
 					done();	
 				});
 		});
