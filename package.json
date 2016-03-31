@@ -13,7 +13,7 @@
   "author": "luca <luca@wonderflow.co>",
   "license": "MIT",
   "dependencies": {
-    "@bitliner/connection-pool": "^0.1.0",
+    "@bitliner/connection-pool": "0.1.1",
     "bson-objectid": "^1.1.4",
     "logb": "0.0.2",
     "mongodb": "1.4.9"

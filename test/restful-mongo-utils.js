@@ -37,7 +37,7 @@ describe('restful-mongo-utils', function() {
 
 		it('If the ObjectID is specified should change the name of the selected document', function(done) {
 			request(app)
-				.put('/api/local/users/56fcc3e197ecb140101d6661')
+				.put('/api/local/users/56fd102ff287ba374c4a57f1')
 				.send(set)
 				.set('Accept', 'application/json')
 				.expect(200)
