@@ -1,21 +1,26 @@
 'use strict';
 
-var expect = require('chai').expect;
-var request = require('supertest');
-var express = require('express');
+var expect            = require('chai').expect;
+var MongoUtils        = require('./utils/mongo-utils');
+var request           = require('supertest');
+var express           = require('express');
 var restfulMongoUtils = require('../restful-mongo-utils.js');
-var bodyParser = require('body-parser');
+var bodyParser        = require('body-parser');
 
-var app = express();
+var data              = require('./data/data');
 
+var app               = express();
+
+var mongoUtils = new MongoUtils({
+	DB_URL: process.env.DB_URL
+});
+	
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-var fixtures = require('mongo-fixme').connect('test-db', {
+var fixtures = require('pow-mongodb-fixtures').connect('test', {
 	port: 27101
 });
-
-fixtures.load(__dirname + '/data/users.js');
 
 var options = {
 	DATABASE_NAME: 'local', 
@@ -24,8 +29,20 @@ var options = {
 };
 
 app.put('/api/:db/:collection/:id?', restfulMongoUtils.getPutHttpHandler(options));
+app.delete('/api/:db/:collection/:id?', restfulMongoUtils.getDeleteHttpHandler(options));
 
 describe('restful-mongo-utils', function() {
+
+	beforeEach(function(done) {
+		fixtures.clearAllAndLoad(data, function(err) {
+			if (err) {
+				console.log('Error while populating db');
+			} else {
+				console.log('Successfully populated db');
+			}
+			done();
+		});
+	});
 
 	describe('getPutHttpHandler', function() {
 
@@ -37,7 +54,7 @@ describe('restful-mongo-utils', function() {
 
 		it('If the ObjectID is specified should change the name of the selected document', function(done) {
 			request(app)
-				.put('/api/local/users/56fd102ff287ba374c4a57f1')
+				.put('/api/local/users/570e6a4e06f71e366a6cada3')
 				.send(set)
 				.set('Accept', 'application/json')
 				.expect(200)
@@ -64,6 +81,25 @@ describe('restful-mongo-utils', function() {
 					expect(res.body).to.be.above(1);
 					done();	
 				});
+		});
+	});
+
+	describe('getDeleteHttpHandler', function() {
+		
+		var err, docs;
+
+		beforeEach(function(done) {
+			mongoUtils.queryAll('users', function(_err, _docs) {
+				err = _err;
+				docs = _docs;
+				done();
+			});
+		});
+
+		it('', function() {
+			expect(err).to.equal(null);
+			expect(docs).to.not.be.undefined;
+			console.log(docs);
 		});
 	});
 });
