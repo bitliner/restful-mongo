@@ -6,7 +6,7 @@ var request           = require('supertest');
 var express           = require('express');
 var restfulMongoUtils = require('../restful-mongo-utils.js');
 var bodyParser        = require('body-parser');
-
+var ObjectID          = require('mongodb').ObjectID;
 var data              = require('./data/data');
 
 var app               = express();
@@ -23,7 +23,7 @@ var fixtures = require('pow-mongodb-fixtures').connect('test', {
 });
 
 var options = {
-	DATABASE_NAME: 'local', 
+	DATABASE_NAME: 'test', 
 	HOST: '127.0.0.1',
 	PORT: '27101'
 };
@@ -34,12 +34,21 @@ app.delete('/api/:db/:collection/:id?', restfulMongoUtils.getDeleteHttpHandler(o
 describe('restful-mongo-utils', function() {
 
 	beforeEach(function(done) {
-		fixtures.clearAllAndLoad(data, function(err) {
+		console.log('BEFORE EACH');
+		fixtures.clearAndLoad(data, function(err) {
 			if (err) {
 				console.log('Error while populating db');
 			} else {
 				console.log('Successfully populated db');
 			}
+			done();
+		});
+	});
+
+	afterEach(function(done) {
+		console.log('AFTER EACH');
+		mongoUtils.queryAll('users', function(err, docs) {
+			console.log('DOCS', JSON.stringify(docs, null, 4));
 			done();
 		});
 	});
@@ -54,16 +63,17 @@ describe('restful-mongo-utils', function() {
 
 		it('If the ObjectID is specified should change the name of the selected document', function(done) {
 			request(app)
-				.put('/api/local/users/570e6a4e06f71e366a6cada3')
+				.put('/api/local/users/571dcf6d265e5a69826b3160')
 				.send(set)
 				.set('Accept', 'application/json')
 				.expect(200)
 				.end(function(err, res) {
-					expect(err).to.be.null;
+					expect(err).to.equal(null);
 					expect(res.statusCode).to.equal(200);
-					expect(res.body).to.not.be.undefined;
-					expect(res.body.name).to.equal('newName');
-					done();
+					mongoUtils.query('users', {_id: new ObjectID('571dcf6d265e5a69826b3160')}, function(err, docs) {
+						expect(docs[0].name).to.equal('newName');
+						done();
+					});
 				});
 		});
 
@@ -75,31 +85,56 @@ describe('restful-mongo-utils', function() {
 				.expect(200)
 				.end(function(err, res) {
 					console.log(err);
-					expect(err).to.be.null;
+					expect(err).to.equal(null);
 					expect(res.statusCode).to.equal(200);
-					expect(res.body).to.not.be.undefined;
-					expect(res.body).to.be.above(1);
-					done();	
+					mongoUtils.queryAll('users', function(err, docs) {
+						docs.forEach(function(doc) {
+							expect(doc.name).to.equal('newName');
+						});	
+						done();
+					});
 				});
 		});
 	});
 
 	describe('getDeleteHttpHandler', function() {
 		
-		var err, docs;
-
-		beforeEach(function(done) {
-			mongoUtils.queryAll('users', function(_err, _docs) {
-				err = _err;
-				docs = _docs;
-				done();
+		describe('delete all the documents', function() {
+			it('Should perform correctly the api call and delete all the documents from the collection', function(done) {
+				request(app)
+				.delete('/api/test/users')
+				.expect(200)
+				.end(function(err, res) {
+					console.log('res', JSON.stringify(res, null, 4));
+					expect(err).to.equal(null);
+					expect(res.status).to.equal(200);
+					mongoUtils.queryAll('users', function(err, docs) {
+						expect(err).to.equal(null);
+						expect(docs.length).to.equal(0);
+						done();
+					});
+				});
 			});
 		});
 
-		it('', function() {
-			expect(err).to.equal(null);
-			expect(docs).to.not.be.undefined;
-			console.log(docs);
+		describe('Delete one document', function() {
+
+			it('Should delete the document specified in the param of the url', function(done) {
+
+				request(app)
+				.delete('/api/test/users/571dcf6d265e5a69826b3160')
+				.expect(200)
+				.end(function(err, res) {
+					expect(err).to.equal(null);
+					expect(res.status).to.equal(200);
+					mongoUtils.queryAll('users', function(err, docs) {
+						expect(err).to.equal(null);
+						expect(docs.length).to.equal(1);
+						done();
+					});
+				});
+
+			});
 		});
 	});
 });

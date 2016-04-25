@@ -8,7 +8,8 @@
         "beforeEach": false,
         "waits": false,
         "waitsFor": false,
-        "runs": false
+        "runs": false,
+        "afterEach": false
     },
 
     "node" : true,

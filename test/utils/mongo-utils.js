@@ -34,4 +34,22 @@ MongoUtils.prototype.queryAll = function(collectionName, cb) {
 	});
 };	
 
+MongoUtils.prototype.query = function(collectionName, query, cb) {
+	this.getDbConnection(function(err, db) {
+		if (err) {
+			cb(err);
+		} else {
+			var collection = db.collection(collectionName);
+			collection.find(query).toArray(function(err, docs) {
+				if (err) {
+					cb(err);
+				} else {
+					db.close();
+					cb(null, docs);
+				}
+			});
+		}
+	});
+};
+
 module.exports = MongoUtils;
