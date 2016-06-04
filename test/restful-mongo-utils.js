@@ -71,6 +71,10 @@ describe('restful-mongo-utils', function() {
 				.end(function(err, res) {
 					expect(err).to.equal(null);
 					expect(res.statusCode).to.equal(200);
+					expect(res.body).to.be.eql({
+						_id: '571dcf6d265e5a69826b3160',
+						name: 'newName'
+					});
 					mongoUtils.query('users', {}, function(err, docs) {
 						console.log('docs', JSON.stringify(docs));
 						expect(docs[0].name).to.equal('newName');
