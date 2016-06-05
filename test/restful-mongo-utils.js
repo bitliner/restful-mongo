@@ -105,6 +105,31 @@ describe('restful-mongo-utils', function() {
 					});
 				});
 		});
+		it('when ObjectId is specified as fake ObjectId into the query field, then the update should work fine anyway', function(done) {
+
+			request(app)
+				.put('/api/local/users/')
+				.send({
+					query: {
+						_id: 'ObjectId("571dcf6d265e5a69826b3160")',
+					},
+					update: set
+				})
+				.expect(200)
+				.end(function(err, res) {
+					expect(err).to.equal(null);
+					expect(res.statusCode).to.equal(200);
+					expect(res.body).to.be.eql(1);
+					mongoUtils.query('users', {}, function(err, docs) {
+						console.log('docs', JSON.stringify(docs));
+						expect(docs[0].name).to.equal('newName');
+						docs.slice(0).forEach(function(doc) {
+							expect(doc).to.not.equal('newName');
+						});
+						done();
+					});
+				});
+		});
 	});
 
 	describe('getDeleteHttpHandler', function() {
