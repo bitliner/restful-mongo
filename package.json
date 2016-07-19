@@ -4,7 +4,7 @@
   "description": "",
   "main": "restful-mongo-utils.js",
   "scripts": {
-    "test": "DB_URL=mongodb://127.0.0.1:27101/test mocha -t 10000 ./test/restful-mongo-utils.js"
+    "test": "DB_URL=mongodb://127.0.0.1:27017/test mocha -t 10000 ./test/**/spec*.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "devDependencies": {
     "body-parser": "^1.15.0",
     "chai": "^3.5.0",
+    "deferred": "^0.7.5",
     "express": "^4.13.4",
     "mongodb": "^1.4.9",
     "pow-mongodb-fixtures": "0.12.0",
