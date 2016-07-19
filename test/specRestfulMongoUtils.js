@@ -16,7 +16,7 @@ var mongoUtils = new MongoUtils({
 
 
 var fixtures = require('pow-mongodb-fixtures').connect('test', {
-    port: 27101
+    port: 27017
 });
 
 
@@ -29,7 +29,7 @@ describe('restful-mongo-utils', function() {
 	handler = new restfulMongoUtils({
 	    DATABASE_NAME: 'test',
 	    HOST: '127.0.0.1',
-	    PORT: '27101'
+	    PORT: '27017'
 	});
     });
 
