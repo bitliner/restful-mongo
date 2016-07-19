@@ -9,5 +9,8 @@ module.exports = {
 	}, {
 		_id: ObjectID.createFromHexString('571dcf75265e5a69826b3161'),
 		name: 'pluto'
+	}, {
+		_id: ObjectID.createFromHexString('571dcf75265e5a69826b3162'),
+		name: 'pluto'
 	}]
 };
