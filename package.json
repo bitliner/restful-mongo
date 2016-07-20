@@ -42,10 +42,18 @@
   "dependencies": {
     "deferred": "~0.6.4",
     "mongodb": "1.4.9",
-    "request": "~2.33.0"
+    "request": "~2.33.0",
+    "restful-mongo-http-handlers": "^2.0.1"
   },
   "description": "Add easily RESTful API to use with Mongo",
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "express": "^4.14.0",
+    "grunt": "^1.0.1",
+    "grunt-mocha-test": "^0.12.7",
+    "logb": "^0.1.0",
+    "mocha": "^2.5.3"
+  },
   "directories": {},
   "dist": {
     "shasum": "65e2d43ed790998d8f893799f96c8b6aef33aa93",
