@@ -1,4 +1,4 @@
-# restful-mongo-utils
+# restful-mongo-http-handlers
 
 ## Test
 
