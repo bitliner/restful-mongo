@@ -1,19 +1,18 @@
 {
-  "name": "@bitliner/restful-mongo-utils",
+  "name": "restful-mongo-http-handlers",
   "version": "2.0.0",
   "description": "",
-  "main": "restful-mongo-utils.js",
+  "main": "index.js",
   "scripts": {
     "test": "DB_URL=mongodb://127.0.0.1:27017/test mocha -t 10000 ./test/**/spec*.js"
   },
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:wonderflow-web-backend/restful-mongo-utils.git"
+    "url": "git@github.com:wonderflow-bv/restful-mongo-http-handlers.git"
   },
   "author": "luca <luca@wonderflow.co>",
   "license": "MIT",
   "dependencies": {
-    "@bitliner/connection-pool": "0.1.1",
     "bson-objectid": "^1.1.4",
     "logb": "0.0.2",
     "mongodb": "1.4.9"
@@ -23,7 +22,6 @@
     "chai": "^3.5.0",
     "deferred": "^0.7.5",
     "express": "^4.13.4",
-    "mongodb": "^1.4.9",
     "pow-mongodb-fixtures": "0.12.0",
     "supertest": "^1.2.0"
   }
