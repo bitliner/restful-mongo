@@ -42,9 +42,9 @@ describe('restful-mongo-utils', function() {
 	app.use(bodyParser.json());
 	app.put('/api/:db/:collection/:id?', handler.httpPut().service());
 	app.delete('/api/:db/:collection/:id?', handler.httpDelete().service());
+	app.get('/api/:db/:collection/count', handler.httpGet().service().count);
 	app.get('/api/:db/:collection/:id?', handler.httpGet().service().get);
 	app.get('/api/:db/:collection/distinct/:key', handler.httpGet().service().distinct);
-	app.get('/count/:db/:collection', handler.httpGet().service().count);
 	app.post('/api/:db/:collection', handler.httpPost().service());
 	fixtures.clearAndLoad(data, done);
     });
@@ -101,7 +101,7 @@ describe('restful-mongo-utils', function() {
 	describe('when is request the "count" service', function () {
 	    it('should get the number of users stored into the db', function (done) {
 		request(app)
-		.get('/count/test/users')
+		.get('/api/test/users/count')
 		.expect(200)
 		.end(function (err, res) {
 		    expect(err).to.equal(null);
