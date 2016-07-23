@@ -1,4 +1,5 @@
 var BSON = require('mongodb').BSONPure;
+var Logger = require('logb').getLogger(module.filename);
 
 function HandlerHttpGet(dao) {
     this.dao = dao;
