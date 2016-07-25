@@ -40,12 +40,13 @@ describe('restful-mongo-utils', function() {
 	    extended: false
 	}));
 	app.use(bodyParser.json());
-	app.put('/api/:db/:collection/:id?', handler.httpPut().service());
-	app.delete('/api/:db/:collection/:id?', handler.httpDelete().service());
-	app.get('/api/:db/:collection/count', handler.httpGet().service().count);
-	app.get('/api/:db/:collection/:id?', handler.httpGet().service().get);
-	app.get('/api/:db/:collection/distinct/:key', handler.httpGet().service().distinct);
-	app.post('/api/:db/:collection', handler.httpPost().service());
+	app.put('/api/:db/:collection/:id?', handler.httpPut());
+	app.delete('/api/:db/:collection/:id?', handler.httpDelete());
+	app.get('/api/:db/:collection/count', handler.httpGet().count);
+	app.get('/api/:db/:collection/:id?', handler.httpGet().get);
+	app.get('/api/:db/:collection/distinct/:key', handler.httpGet().distinct);
+	app.post('/api/:db/:collection', handler.httpPost().post);
+	// TODO: make test to query, distinct, count service post methods
 	fixtures.clearAndLoad(data, done);
     });
 
