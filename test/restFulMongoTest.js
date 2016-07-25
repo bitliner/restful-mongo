@@ -45,8 +45,20 @@ describe('RestfulMongo', function () {
     });
 
     describe('when use the HTTP POST method', function () {
+	it('should exists the count API', function () {
+	    expect(pathRoute.post.indexOf('/api/:db/:collection/count')).to.not.equal(-1);
+	});
+
+	it('should exists the distinct API', function () {
+	    expect(pathRoute.post.indexOf('/api/:db/:collection/distinct/:key')).to.not.equal(-1);
+	});
+
 	it('should exists the post API', function () {
 	    expect(pathRoute.post.indexOf('/api/:db/:collection')).to.not.equal(-1);
+	});
+	
+	it('should exists the query API', function () {
+	    expect(pathRoute.post.indexOf('/api/:db/:collection/query')).to.not.equal(-1);
 	});
     });
     
