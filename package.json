@@ -43,7 +43,7 @@
     "deferred": "~0.6.4",
     "mongodb": "1.4.9",
     "request": "~2.33.0",
-    "restful-mongo-http-handlers": "^3.0.0"
+    "restful-mongo-http-handlers": "^3.0.1"
   },
   "description": "Add easily RESTful API to use with Mongo",
   "devDependencies": {
