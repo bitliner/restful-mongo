@@ -4,7 +4,73 @@ var Logger = require('logb').getLogger(module.filename);
 var mongo = require('mongodb');
 var BSON = mongo.BSONPure;
 
-var unescapeMongoDbModifiers = function(obj) {
+module.exports.hasFakeObjectId = function (jsonObj) {
+    return JSON.stringify(jsonObj).indexOf('ObjectId') >= 0;
+};
+
+var convertFakeObjectId = module.exports.convertFakeObjectId = function(query) {
+    Logger.info('Running convertFakeObjectId');
+    if (typeof value === 'object' && Array.isArray(query)) {
+	return query.map(function(el) {
+	    return convertFakeObjectId(el);
+	});
+    }
+    if (!query) {
+	return null;
+    }
+    Object.keys(query).forEach(function(key) {
+	var value;
+	value = query[key];
+	//Logger.info('-->', value);
+	if (typeof value === 'object') {
+	    query[key] = convertFakeObjectId(query[key]);
+	} else if (typeof value === 'string' && value.indexOf('ObjectId') >= 0) {
+	    // Logger.info('----->', 'found objectid', value)
+	    value = value.replace(/ObjectId\(./g, '');
+	    value = value.replace(/..$/g, '');
+	    // Logger.info('-----> 2', 'found objectid', value)
+	    query[key] = new BSON.ObjectID(value);
+	    Logger.info('Converted', query[key], query[key].constructor.name);
+	}
+    });
+    //console.log('1111',typeof query._id)
+    return query;
+};
+
+module.exports.convertFakeRegexInRegexObject = function (query) {
+	Logger.info('Running convertFakeRegexInRegexObject');
+	if (typeof value === 'object' && Array.isArray(query)) {
+		return query.map(function(el) {
+			return convertFakeRegexInRegexObject(el);
+		});
+	}
+	if (!query) {
+		return null;
+	}
+	Object.keys(query).forEach(function(key) {
+		var value;
+
+		var modifier, regex, tmp;
+
+		value = query[key];
+
+		Logger.info('-->', value);
+
+		if (key === '$regex' && typeof value === 'string') {
+			tmp = value.indexOf('/', 1);
+			regex = value.substr(1, tmp - 1);
+			modifier = value.substr(tmp + 1);
+			regex = new RegExp(regex, modifier);
+			query[key] = regex;
+			Logger.info('Converted regex is', query[key].toString(), 'from', value);
+		} else if (typeof value === 'object' && value) {
+			query[key] = convertFakeRegexInRegexObject(query[key]);
+		}
+	});
+	return query;
+}
+
+module.exports.unescapeMongoDbModifiers = function (obj) {
 	return JSON.parse(
 		JSON.stringify(obj)
 		.replace(/\+\$set/g, '$set')
@@ -24,39 +90,35 @@ var unescapeMongoDbModifiers = function(obj) {
 	);
 };
 
-module.exports.hasFakeObjectId = function(jsonObj) {
-	return JSON.stringify(jsonObj).indexOf('ObjectId') >= 0;
-};
-var convertFakeObjectId = module.exports.convertFakeObjectId = function(query) {
-	Logger.info('Running convertFakeObjectId');
-	if (typeof value === 'object' && Array.isArray(query)) {
-		return query.map(function(el) {
-			return convertFakeObjectId(el);
-		});
-	}
-	if (!query) {
-		return null;
-	}
-	Object.keys(query).forEach(function(key) {
-		var value;
-		value = query[key];
-		//Logger.info('-->', value);
-		if (typeof value === 'object') {
-			query[key] = convertFakeObjectId(query[key]);
-		} else if (typeof value === 'string' && value.indexOf('ObjectId') >= 0) {
-			// Logger.info('----->', 'found objectid', value)
-			value = value.replace(/ObjectId\(./g, '');
-			value = value.replace(/..$/g, '');
-			// Logger.info('-----> 2', 'found objectid', value)
-			query[key] = new BSON.ObjectID(value);
-			Logger.info('Converted', query[key], query[key].constructor.name);
-		}
+module.exports.convertFakeObjectIdInObjectId = function (query) {
+    Logger.info('Runnin convertFakeObjectIdInObjectId');
+    if (typeof value === 'object' && Array.isArray(query)) {
+	return query.map(function(el) {
+	    return convertFakeObjectIdInObjectId(el);
 	});
-	//console.log('1111',typeof query._id)
-	return query;
-};
+    }
+    if (!query) {
+	return null;
+    }
+    Object.keys(query).forEach(function(key) {
+	var value;
+	value = query[key];
+	//Logger.info('-->', value);
+	if (typeof value === 'object') {
+	    query[key] = convertFakeObjectIdInObjectId(query[key]);
+	} else if (typeof value === 'string' && value.indexOf('ObjectId') >= 0) {
+	    // Logger.info('----->', 'found objectid', value)
+	    value = value.replace(/ObjectId\(./g, '');
+	    value = value.replace(/..$/g, '');
+	    // Logger.info('-----> 2', 'found objectid', value)
+	    query[key] = new BSON.ObjectID(value);
+	    //Logger.info('Converted', query[key], query[key].constructor.name);
+	}
+    });
+    return query;
+}
 
-var mergeRecursive = function(obj1, obj2) {
+module.exports.mergeRecursive = function (obj1, obj2) {
 
 	for (var p in obj2) {
 		try {
@@ -79,5 +141,27 @@ var mergeRecursive = function(obj1, obj2) {
 	return obj1;
 };
 
-module.exports.unescapeMongoDbModifiers = unescapeMongoDbModifiers;
-module.exports.mergeRecursive = mergeRecursive;
+module.exports.convertIsoDateInDate = function (query) {
+    Logger.info('Runnin convertIsoDateInDate');
+    if (typeof value === 'object' && Array.isArray(query)) {
+	return query.map(function(el) {
+	    return convertIsoDateInDate(el);
+	});
+    }
+    if (!query) {
+	return null;
+    }
+    //Logger.info('--------------------------------->', query)
+    Object.keys(query).forEach(function(key) {
+	var value;
+	value = query[key];
+	if (typeof value === 'object') {
+	    query[key] = convertIsoDateInDate(query[key]);
+	} else if (typeof value === 'string' && value.indexOf('ISODate') >= 0) {
+	    value = value.replace(/ISODate\(./g, '');
+	    value = value.replace(/..$/g, '');
+	    query[key] = new Date(value);
+	}
+    });
+    return query;
+}
