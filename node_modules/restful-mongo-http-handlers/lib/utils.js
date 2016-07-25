@@ -4,11 +4,11 @@ var Logger = require('logb').getLogger(module.filename);
 var mongo = require('mongodb');
 var BSON = mongo.BSONPure;
 
-module.exports.hasFakeObjectId = function (jsonObj) {
+function hasFakeObjectId(jsonObj) {
     return JSON.stringify(jsonObj).indexOf('ObjectId') >= 0;
 };
 
-var convertFakeObjectId = module.exports.convertFakeObjectId = function(query) {
+function convertFakeObjectId(query) {
     Logger.info('Running convertFakeObjectId');
     if (typeof value === 'object' && Array.isArray(query)) {
 	return query.map(function(el) {
@@ -37,7 +37,7 @@ var convertFakeObjectId = module.exports.convertFakeObjectId = function(query) {
     return query;
 };
 
-module.exports.convertFakeRegexInRegexObject = function (query) {
+function convertFakeRegexInRegexObject(query) {
 	Logger.info('Running convertFakeRegexInRegexObject');
 	if (typeof value === 'object' && Array.isArray(query)) {
 		return query.map(function(el) {
@@ -70,7 +70,7 @@ module.exports.convertFakeRegexInRegexObject = function (query) {
 	return query;
 }
 
-module.exports.unescapeMongoDbModifiers = function (obj) {
+function unescapeMongoDbModifiers(obj) {
 	return JSON.parse(
 		JSON.stringify(obj)
 		.replace(/\+\$set/g, '$set')
@@ -90,7 +90,7 @@ module.exports.unescapeMongoDbModifiers = function (obj) {
 	);
 };
 
-module.exports.convertFakeObjectIdInObjectId = function (query) {
+function convertFakeObjectIdInObjectId(query) {
     Logger.info('Runnin convertFakeObjectIdInObjectId');
     if (typeof value === 'object' && Array.isArray(query)) {
 	return query.map(function(el) {
@@ -118,7 +118,7 @@ module.exports.convertFakeObjectIdInObjectId = function (query) {
     return query;
 }
 
-module.exports.mergeRecursive = function (obj1, obj2) {
+function mergeRecursive(obj1, obj2) {
 
 	for (var p in obj2) {
 		try {
@@ -141,7 +141,7 @@ module.exports.mergeRecursive = function (obj1, obj2) {
 	return obj1;
 };
 
-module.exports.convertIsoDateInDate = function (query) {
+function convertIsoDateInDate(query) {
     Logger.info('Runnin convertIsoDateInDate');
     if (typeof value === 'object' && Array.isArray(query)) {
 	return query.map(function(el) {
@@ -165,3 +165,11 @@ module.exports.convertIsoDateInDate = function (query) {
     });
     return query;
 }
+
+module.exports.hasFakeObjectId = hasFakeObjectId;
+module.exports.convertFakeObjectId = convertFakeObjectId;
+module.exports.convertFakeRegexInRegexObject = convertFakeRegexInRegexObject;
+module.exports.unescapeMongoDbModifiers = unescapeMongoDbModifiers;
+module.exports.convertFakeObjectIdInObjectId = convertFakeObjectIdInObjectId;
+module.exports.mergeRecursive = mergeRecursive;
+module.exports.convertIsoDateInDate = convertIsoDateInDate;
