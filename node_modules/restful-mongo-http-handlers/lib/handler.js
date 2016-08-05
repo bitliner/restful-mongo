@@ -1,8 +1,8 @@
 var Dao = require('./connection/dao');
-var HandlerHttpDelete = require('./http_handler/delete');
-var HandlerHttpGet = require('./http_handler/get');
-var HandlerHttpPost = require('./http_handler/post');
-var HandlerHttpPut = require('./http_handler/put');
+var HandlerHttpDelete = require('./http-handler/delete');
+var HandlerHttpGet = require('./http-handler/get');
+var HandlerHttpPost = require('./http-handler/post');
+var HandlerHttpPut = require('./http-handler/put');
 
 var handlerHttpDelete;
 var handlerHttpGet;

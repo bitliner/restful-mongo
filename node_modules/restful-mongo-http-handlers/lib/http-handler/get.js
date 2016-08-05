@@ -91,81 +91,15 @@ var _get = function(req, res) {
     // console.log(query);
     // console.log('req.query', req.query);
 
+    var options = req.params.options || {};
+    var fields = {};
+
     // Providing an id overwrites giving a query in the URL
     if (req.params.id) {
 	query = {
 	    '_id': new BSON.ObjectID(req.params.id)
 	};
-    }
-    var options = req.params.options || {};
-    var fields = {};
 
-    if (req.query.rawQuery && req.query.rawQuery !== '' && req.query.rawQuery !== 'null') {
-	containsIsoDate = req.query.rawQuery.indexOf('ISODate') >= 0;
-	containsObjectId = req.query.rawQuery.indexOf('ObjectId') >= 0;
-	containsRegex = req.query.rawQuery.indexOf('$regex') >= 0;
-	try {
-	    req.query.rawQuery = JSON.parse(req.query.rawQuery);
-	} catch (e) {
-	    return res.json(500, {
-		error: 'Error parsing json'
-	    });
-	}
-	query = req.query.rawQuery;
-	if (containsIsoDate) {
-	    Logger.info('Query contains ISODate...converting it...');
-	    query = utils.convertIsoDateInDate(query);
-	    Logger.info('Resulting query', {
-		query: JSON.stringify(query)
-	    });
-	}
-	if (containsObjectId) {
-	    Logger.info('Query contains fake ObjectId...converting it...');
-	    query = utils.convertFakeObjectIdInObjectId(query);
-	    Logger.info('Resulting query', {
-		query: JSON.stringify(query)
-	    });
-	}
-	if (containsRegex) {
-	    Logger.info('Query contains fake regex...converting it...');
-	    query = utils.convertFakeRegexInRegexObject(query);
-	    Logger.info('Resulting query', {
-		query: JSON.stringify(query)
-	    });
-	}
-    }
-    if (req.query.fields) {
-	try {
-	    req.query.fields = JSON.parse(req.query.fields);
-	} catch (e) {
-	    console.log('Error parsin json', 'fields', req.query.fields);
-	    return res.json(500, {
-		error: 'Error parsing json'
-	    });
-	}
-	fields = req.query.fields;
-    }
-    if (req.query.rawSort) {
-	try {
-	    req.query.rawSort = JSON.parse(req.query.rawSort);
-	} catch (e) {
-	    return res.json(500, {
-		error: 'Error parsing json'
-	    });
-	}
-	options.sort = req.query.rawSort;
-    }
-    if (req.query.rawOptions) {
-	try {
-	    req.query.rawOptions = JSON.parse(req.query.rawOptions);
-	} catch (e) {
-	    return res.json(500, {
-		error: 'Error parsing json'
-	    });
-	}
-	options = req.query.rawOptions;
-    }
-    if (req.params.id) {
 	this.dao.get(req.params.db, req.params.collection, query, fields, options, function(err, doc) {
 	    if (!err && !doc) {
 		res.send(404);
@@ -176,7 +110,78 @@ var _get = function(req, res) {
 		res.json(200, doc);
 	    }
 	});
-    } else {
+    }
+
+    else {
+	if (req.query.rawQuery && req.query.rawQuery !== '' && req.query.rawQuery !== 'null') {
+	    containsIsoDate = req.query.rawQuery.indexOf('ISODate') >= 0;
+	    containsObjectId = req.query.rawQuery.indexOf('ObjectId') >= 0;
+	    containsRegex = req.query.rawQuery.indexOf('$regex') >= 0;
+	    try {
+		req.query.rawQuery = JSON.parse(req.query.rawQuery);
+	    } catch (e) {
+		return res.json(500, {
+		    error: 'Error parsing json'
+		});
+	    }
+	    query = req.query.rawQuery;
+	    if (containsIsoDate) {
+		Logger.info('Query contains ISODate...converting it...');
+		query = utils.convertIsoDateInDate(query);
+		Logger.info('Resulting query', {
+		    query: JSON.stringify(query)
+		});
+	    }
+	    if (containsObjectId) {
+		Logger.info('Query contains fake ObjectId...converting it...');
+		query = utils.convertFakeObjectIdInObjectId(query);
+		Logger.info('Resulting query', {
+		    query: JSON.stringify(query)
+		});
+	    }
+	    if (containsRegex) {
+		Logger.info('Query contains fake regex...converting it...');
+		query = utils.convertFakeRegexInRegexObject(query);
+		Logger.info('Resulting query', {
+		    query: JSON.stringify(query)
+		});
+	    }
+	}
+
+	if (req.query.fields) {
+	    try {
+		req.query.fields = JSON.parse(req.query.fields);
+	    } catch (e) {
+		console.log('Error parsin json', 'fields', req.query.fields);
+		return res.json(500, {
+		    error: 'Error parsing json'
+		});
+	    }
+	    fields = req.query.fields;
+	}
+
+	if (req.query.rawSort) {
+	    try {
+		req.query.rawSort = JSON.parse(req.query.rawSort);
+	    } catch (e) {
+		return res.json(500, {
+		    error: 'Error parsing json'
+		});
+	    }
+	    options.sort = req.query.rawSort;
+	}
+
+	if (req.query.rawOptions) {
+	    try {
+		req.query.rawOptions = JSON.parse(req.query.rawOptions);
+	    } catch (e) {
+		return res.json(500, {
+		    error: 'Error parsing json'
+		});
+	    }
+	    options = req.query.rawOptions;
+	}
+
 	this.dao.query(req.params.db, req.params.collection, query, fields, options, function(err, docs) {
 	    if (err) {
 		Logger.error('Error', err);
