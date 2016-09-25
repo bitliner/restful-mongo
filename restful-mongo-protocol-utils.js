@@ -23,7 +23,7 @@ function toMongo(query) {
 
 function hasFakeObjectId(jsonObj) {
 	return JSON.stringify(jsonObj).indexOf('ObjectId') >= 0;
-};
+}
 
 function convertFakeObjectId(query) {
 	Logger.info('Running convertFakeObjectId');
@@ -52,7 +52,7 @@ function convertFakeObjectId(query) {
 	});
 	//console.log('1111',typeof query._id)
 	return query;
-};
+}
 
 function convertFakeRegexInRegexObject(query) {
 	Logger.info('Running convertFakeRegexInRegexObject');
@@ -105,7 +105,7 @@ function unescapeMongoDbModifiers(obj) {
 		.replace(/\+\$where/g, '$where')
 		.replace(/\+\$elemMatch/g, '$elemMatch')
 	);
-};
+}
 
 function convertFakeObjectIdInObjectId(query) {
 	Logger.info('Runnin convertFakeObjectIdInObjectId');
@@ -156,7 +156,7 @@ function mergeRecursive(obj1, obj2) {
 	}
 
 	return obj1;
-};
+}
 
 function convertIsoDateInDate(query) {
 	Logger.info('Runnin convertIsoDateInDate');
