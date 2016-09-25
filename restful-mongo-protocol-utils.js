@@ -4,37 +4,54 @@ var Logger = require('logb').getLogger(module.filename);
 var mongo = require('mongodb');
 var BSON = mongo.BSONPure;
 
+
+function toMongo(query) {
+	var queryStr;
+
+	queryStr = JSON.stringify(query);
+	if (queryStr.indexOf('$regex') >= 0 ) {
+		query = convertFakeRegexInRegexObject(query);
+	}
+	if (queryStr.indexOf('ObjectId') >= 0 ) {
+		query = convertFakeObjectId(query);
+	}
+	if (queryStr.indexOf('ISODate') >= 0 ) {
+		query = convertIsoDateInDate(query);
+	}
+	return query;
+}
+
 function hasFakeObjectId(jsonObj) {
-    return JSON.stringify(jsonObj).indexOf('ObjectId') >= 0;
+	return JSON.stringify(jsonObj).indexOf('ObjectId') >= 0;
 };
 
 function convertFakeObjectId(query) {
-    Logger.info('Running convertFakeObjectId');
-    if (typeof value === 'object' && Array.isArray(query)) {
-	return query.map(function(el) {
-	    return convertFakeObjectId(el);
-	});
-    }
-    if (!query) {
-	return null;
-    }
-    Object.keys(query).forEach(function(key) {
-	var value;
-	value = query[key];
-	//Logger.info('-->', value);
-	if (typeof value === 'object') {
-	    query[key] = convertFakeObjectId(query[key]);
-	} else if (typeof value === 'string' && value.indexOf('ObjectId') >= 0) {
-	    // Logger.info('----->', 'found objectid', value)
-	    value = value.replace(/ObjectId\(./g, '');
-	    value = value.replace(/..$/g, '');
-	    // Logger.info('-----> 2', 'found objectid', value)
-	    query[key] = new BSON.ObjectID(value);
-	    Logger.info('Converted', query[key], query[key].constructor.name);
+	Logger.info('Running convertFakeObjectId');
+	if (typeof value === 'object' && Array.isArray(query)) {
+		return query.map(function(el) {
+			return convertFakeObjectId(el);
+		});
 	}
-    });
-    //console.log('1111',typeof query._id)
-    return query;
+	if (!query) {
+		return null;
+	}
+	Object.keys(query).forEach(function(key) {
+		var value;
+		value = query[key];
+		//Logger.info('-->', value);
+		if (typeof value === 'object') {
+			query[key] = convertFakeObjectId(query[key]);
+		} else if (typeof value === 'string' && value.indexOf('ObjectId') >= 0) {
+			// Logger.info('----->', 'found objectid', value)
+			value = value.replace(/ObjectId\(./g, '');
+			value = value.replace(/..$/g, '');
+			// Logger.info('-----> 2', 'found objectid', value)
+			query[key] = new BSON.ObjectID(value);
+			Logger.info('Converted', query[key], query[key].constructor.name);
+		}
+	});
+	//console.log('1111',typeof query._id)
+	return query;
 };
 
 function convertFakeRegexInRegexObject(query) {
@@ -91,31 +108,31 @@ function unescapeMongoDbModifiers(obj) {
 };
 
 function convertFakeObjectIdInObjectId(query) {
-    Logger.info('Runnin convertFakeObjectIdInObjectId');
-    if (typeof value === 'object' && Array.isArray(query)) {
-	return query.map(function(el) {
-	    return convertFakeObjectIdInObjectId(el);
-	});
-    }
-    if (!query) {
-	return null;
-    }
-    Object.keys(query).forEach(function(key) {
-	var value;
-	value = query[key];
-	//Logger.info('-->', value);
-	if (typeof value === 'object') {
-	    query[key] = convertFakeObjectIdInObjectId(query[key]);
-	} else if (typeof value === 'string' && value.indexOf('ObjectId') >= 0) {
-	    // Logger.info('----->', 'found objectid', value)
-	    value = value.replace(/ObjectId\(./g, '');
-	    value = value.replace(/..$/g, '');
-	    // Logger.info('-----> 2', 'found objectid', value)
-	    query[key] = new BSON.ObjectID(value);
-	    //Logger.info('Converted', query[key], query[key].constructor.name);
+	Logger.info('Runnin convertFakeObjectIdInObjectId');
+	if (typeof value === 'object' && Array.isArray(query)) {
+		return query.map(function(el) {
+			return convertFakeObjectIdInObjectId(el);
+		});
 	}
-    });
-    return query;
+	if (!query) {
+		return null;
+	}
+	Object.keys(query).forEach(function(key) {
+		var value;
+		value = query[key];
+		//Logger.info('-->', value);
+		if (typeof value === 'object') {
+			query[key] = convertFakeObjectIdInObjectId(query[key]);
+		} else if (typeof value === 'string' && value.indexOf('ObjectId') >= 0) {
+			// Logger.info('----->', 'found objectid', value)
+			value = value.replace(/ObjectId\(./g, '');
+			value = value.replace(/..$/g, '');
+			// Logger.info('-----> 2', 'found objectid', value)
+			query[key] = new BSON.ObjectID(value);
+			//Logger.info('Converted', query[key], query[key].constructor.name);
+		}
+	});
+	return query;
 }
 
 function mergeRecursive(obj1, obj2) {
@@ -142,28 +159,28 @@ function mergeRecursive(obj1, obj2) {
 };
 
 function convertIsoDateInDate(query) {
-    Logger.info('Runnin convertIsoDateInDate');
-    if (typeof value === 'object' && Array.isArray(query)) {
-	return query.map(function(el) {
-	    return convertIsoDateInDate(el);
-	});
-    }
-    if (!query) {
-	return null;
-    }
-    //Logger.info('--------------------------------->', query)
-    Object.keys(query).forEach(function(key) {
-	var value;
-	value = query[key];
-	if (typeof value === 'object') {
-	    query[key] = convertIsoDateInDate(query[key]);
-	} else if (typeof value === 'string' && value.indexOf('ISODate') >= 0) {
-	    value = value.replace(/ISODate\(./g, '');
-	    value = value.replace(/..$/g, '');
-	    query[key] = new Date(value);
+	Logger.info('Runnin convertIsoDateInDate');
+	if (typeof value === 'object' && Array.isArray(query)) {
+		return query.map(function(el) {
+			return convertIsoDateInDate(el);
+		});
 	}
-    });
-    return query;
+	if (!query) {
+		return null;
+	}
+	//Logger.info('--------------------------------->', query)
+	Object.keys(query).forEach(function(key) {
+		var value;
+		value = query[key];
+		if (typeof value === 'object') {
+			query[key] = convertIsoDateInDate(query[key]);
+		} else if (typeof value === 'string' && value.indexOf('ISODate') >= 0) {
+			value = value.replace(/ISODate\(./g, '');
+			value = value.replace(/..$/g, '');
+			query[key] = new Date(value);
+		}
+	});
+	return query;
 }
 
 module.exports.hasFakeObjectId = hasFakeObjectId;
@@ -173,3 +190,4 @@ module.exports.unescapeMongoDbModifiers = unescapeMongoDbModifiers;
 module.exports.convertFakeObjectIdInObjectId = convertFakeObjectIdInObjectId;
 module.exports.mergeRecursive = mergeRecursive;
 module.exports.convertIsoDateInDate = convertIsoDateInDate;
+module.exports.toMongo = toMongo;
