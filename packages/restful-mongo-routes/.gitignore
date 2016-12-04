@@ -1,0 +1,6 @@
+.git/
+examples/example1/node_modules/
+npm-debug.log
+
+# Temporary files
+*.*~
