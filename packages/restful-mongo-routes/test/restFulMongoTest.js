@@ -64,7 +64,7 @@ describe('RestfulMongo', function () {
     
     describe('when use the HTTP PUT method', function () {
 	it('should exists the put API', function () {
-	    expect(pathRoute.put.indexOf('/api/:db/:collection/:id')).to.not.equal(-1);
+	    expect(pathRoute.put.indexOf('/api/:db/:collection/:id?')).to.not.equal(-1);
 	});
     });
 
