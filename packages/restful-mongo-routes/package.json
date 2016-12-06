@@ -1,90 +1,29 @@
 {
-  "_args": [
-    [
-      "restful-mongo2",
-      "/home/luca/workspace/wonderflow/back-end-modules/admin.api.wonderflow.co"
-    ]
-  ],
-  "_from": "restful-mongo2@latest",
-  "_id": "restful-mongo2@0.3.9",
-  "_inCache": true,
-  "_installable": true,
-  "_location": "/restful-mongo2",
-  "_nodeVersion": "0.10.36",
-  "_npmUser": {
-    "email": "giovanni.gaglione@gmail.com",
-    "name": "bitliner"
-  },
-  "_npmVersion": "2.11.0",
-  "_phantomChildren": {},
-  "_requested": {
-    "name": "restful-mongo2",
-    "raw": "restful-mongo2",
-    "rawSpec": "",
-    "scope": null,
-    "spec": "latest",
-    "type": "tag"
-  },
-  "_requiredBy": [
-    "#DEV:/"
-  ],
-  "_resolved": "https://registry.npmjs.org/restful-mongo2/-/restful-mongo2-0.3.9.tgz",
-  "_shasum": "65e2d43ed790998d8f893799f96c8b6aef33aa93",
-  "_shrinkwrap": null,
-  "_spec": "restful-mongo2",
-  "_where": "/home/luca/workspace/wonderflow/back-end-modules/admin.api.wonderflow.co",
-  "author": {
-    "name": "bitliner"
-  },
-  "bugs": {
-    "url": "https://github.com/bitliner/restful-mongo/issues"
+  "name": "restful-mongo-routes",
+  "version": "1.0.0",
+  "description": "It allows to add easily and quickly RESTful API to your nodejs app, to be used with MongoDB.",
+  "main": "index.js",
+  "directories": {
+    "example": "examples",
+    "test": "test"
   },
   "dependencies": {
-    "deferred": "~0.6.4",
-    "mongodb": "1.4.9",
-    "request": "~2.33.0",
-    "restful-mongo-http-handlers": "^3.0.2"
-  },
-  "description": "Add easily RESTful API to use with Mongo",
-  "devDependencies": {
     "chai": "^3.5.0",
+    "deferred": "^0.6.8",
     "express": "^4.14.0",
     "grunt": "^1.0.1",
     "grunt-mocha-test": "^0.12.7",
     "logb": "^0.1.0",
+    "mongodb": "^1.4.9",
+    "request": "^2.33.0",
+    "restful-mongo-http-handlers": "^3.0.2"
+  },
+  "devDependencies": {
     "mocha": "^2.5.3"
   },
-  "directories": {},
-  "dist": {
-    "shasum": "65e2d43ed790998d8f893799f96c8b6aef33aa93",
-    "tarball": "http://registry.npmjs.org/restful-mongo2/-/restful-mongo2-0.3.9.tgz"
-  },
-  "homepage": "https://github.com/bitliner/restful-mongo",
-  "keywords": [
-    "mongo",
-    "mongodb",
-    "api",
-    "rest",
-    "restful",
-    "crud"
-  ],
-  "license": "BSD",
-  "main": "index.js",
-  "maintainers": [
-    {
-      "email": "giovanni.gaglione@gmail.com",
-      "name": "bitliner"
-    }
-  ],
-  "name": "restful-mongo2",
-  "optionalDependencies": {},
-  "readme": "ERROR: No README data found!",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bitliner/restful-mongo.git"
-  },
   "scripts": {
-    "test": "grunt --gruntfile Gruntfile.js"
+    "test": "mocha"
   },
-  "version": "0.4.4"
+  "author": "",
+  "license": "ISC"
 }
