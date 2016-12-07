@@ -1,0 +1,9 @@
+{
+	"globals":{
+		"describe":true,
+		"it":true,
+		"beforeEach":true,
+		"beforeAll":true,
+		"before":true
+	}
+}
