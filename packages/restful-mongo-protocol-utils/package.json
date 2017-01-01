@@ -1,6 +1,6 @@
 {
   "name": "restful-mongo-protocol-utils",
-  "version": "0.1.0",
+  "version": "0.2.5",
   "description": "A set of utils to manage the communication protocol between client-server in a restful-mongo architecture.",
   "main": "restful-mongo-protocol-utils.js",
   "dependencies": {
