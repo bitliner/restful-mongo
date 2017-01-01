@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -t 10000 ./test/*.js"
+    "test": "LOG_LEVEL=debug mocha -t 10000 ./test/*.js"
   },
   "repository": {
     "type": "git",
@@ -14,7 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "bson-objectid": "^1.1.4",
-    "logb": "0.0.2",
+    "logb": "^0.1.1",
     "mongodb": "1.4.9"
   },
   "devDependencies": {

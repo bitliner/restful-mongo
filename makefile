@@ -6,7 +6,7 @@ DB_URL=mongodb://$(MONGODB_HOST):$(MONGODB_PORT)/$(DB_NAME)
 noop:
 
 set_env:
-	export MONGODB_HOST=192.168.99.100 && \
+	export MONGODB_HOST=127.0.0.1 && \
 	export MONGODB_PORT=27017 && \
 	export DB_NAME="restfulMongo" && \
 	export DB_URL="mongodb://$MONGODB_HOST:$MONGODB_PORT/$DB_NAME"

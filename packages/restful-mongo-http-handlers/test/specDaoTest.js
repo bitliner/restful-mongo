@@ -1,192 +1,154 @@
-var expect = require('chai').expect,
-	DbPopulator = require('./DbPopulator'),
-	Dao = require('../lib/connection/dao');
+/* eslint-env mocha */
 
-var mongoDbUrl = process.env.DB_URL;
-var mongoDbHost = process.env.MONGODB_HOST;
-var databaseName = process.env.DB_NAME;
+const expect = require('chai').expect;
+const Dao = require('../lib/connection/dao');
+const fixtures = require('pow-mongodb-fixtures').connect('test');
 
-var data = {
+const MONGODB_URL = process.env.NODE_ENV || 'mongodb://localhost:27017/test';
+
+
+const data = {
 	saluti: [{
 		saluto: 'ciao',
 	}, {
-		saluto: 'ola'
-	}]
-}
+		saluto: 'ola',
+	}],
+};
 
-
-
-describe.only('TEST', function() {
-	var dao;
+describe('TEST', function() {
+	let dao;
 
 	beforeEach(function(done) {
-
 		dao = new Dao({
-			url: mongoDbUrl
+			url: MONGODB_URL,
 		});
 
-		new DbPopulator({
-			databaseName: databaseName,
-			data: data
-		}).execute().then(function() {
-			done();
-		});
-
-	})
+		fixtures.clearAllAndLoad(data, done);
+	});
 
 
-	describe.only('DAO get', function() {
-
+	describe('DAO get', function() {
 		it('By field', function(done) {
-
 			dao.get('restfulMongo', 'saluti', {
-				saluto: 'ciao'
+				saluto: 'ciao',
 			}, {}, {}, function(err, doc) {
-
-
-				expect(err).to.be.eql(null)
-				expect(doc).to.have.property('saluto', 'ciao')
-
-				done()
-			})
-		})
-	})
+				expect(err).to.be.eql(null);
+				expect(doc).to.have.property('saluto', 'ciao');
+				done();
+			});
+		});
+	});
 
 	describe('DAO query without hint', function() {
-
 		it('By field', function(done) {
-
 			dao.query('restfulMongo', 'saluti', {}, {}, {}, function(err, docs) {
-
-				expect(err).to.be.eql(null)
-				expect(docs.length).to.be.eql(2)
-
-				done()
-			})
-		})
-	})
+				expect(err).to.be.eql(null);
+				expect(docs.length).to.be.eql(2);
+				done();
+			});
+		});
+	});
 
 	describe('DAO query with hint', function() {
-
 		it('By field', function(done) {
-
 			dao.query('restfulMongo', 'saluti', {}, {}, {
 				hint: {
-					saluto: 1
-				}
+					saluto: 1,
+				},
 			}, function(err, docs) {
-
-				expect(err).to.be.eql(null)
-				expect(docs.length).to.be.eql(2)
-
-				done()
-			})
-		})
-	})
+				expect(err).to.be.eql(null);
+				expect(docs.length).to.be.eql(2);
+				done();
+			});
+		});
+	});
 
 	describe('DAO queryAsCursor without hint', function() {
-
 		it('By field', function(done) {
-
-			dao.queryAsCursor('restfulMongo', 'saluti', {}, {}, {}, function(err, cursor) {
-				var lengthOfCursor = 0;
-
-				cursor.each(function(err, item) {
-					if (item == null) {
-						expect(lengthOfCursor).to.be.eql(2)
-						expect(err).to.be.eql(null)
-						done()
-					} else {
-						lengthOfCursor++
-					}
-
-				})
-
-			})
-		})
-	})
+			dao.queryAsCursor(
+				'restfulMongo', 'saluti', {}, {}, {},
+				function(err, cursor) {
+					let lengthOfCursor = 0;
+					cursor.each(function(err, item) {
+						if (item == null) {
+							expect(lengthOfCursor).to.be.eql(2);
+							expect(err).to.be.eql(null);
+							done();
+						} else {
+							lengthOfCursor++;
+						}
+					});
+				});
+		});
+	});
 
 	// TODO: check also if indexed are created
 	describe('DAO queryAsCursor with hint', function() {
-
 		it('By field', function(done) {
-
 			dao.queryAsCursor('restfulMongo', 'saluti', {}, {}, {
 				hint: {
-					saluto: 1
-				}
+					saluto: 1,
+				},
 			}, function(err, cursor) {
-				var lengthOfCursor = 0;
+				let lengthOfCursor = 0;
 
 				cursor.each(function(err, item) {
 					if (item == null) {
-						expect(lengthOfCursor).to.be.eql(2)
-						expect(err).to.be.eql(null)
-						done()
+						expect(lengthOfCursor).to.be.eql(2);
+						expect(err).to.be.eql(null);
+						done();
 					} else {
-						lengthOfCursor++
+						lengthOfCursor++;
 					}
-
-				})
-
-			})
-		})
-	})
+				});
+			});
+		});
+	});
 
 	describe('DAO queryAsCursor with batchSize', function() {
-		var oneMilionOfObjects, number;
+		let oneMilionOfObjects;
+		let number;
 
 		beforeEach(function(done) {
-			oneMilionOfObjects = []
+			oneMilionOfObjects = [];
 			number = 100;
-			for (var i = 0; i < number; i++) {
+			for (let i = 0; i < number; i++) {
 				oneMilionOfObjects.push({
-					saluto: 'ciao'
-				})
+					saluto: 'ciao',
+				});
 			}
 
 			dao = new Dao({
-				url: mongoDbUrl
+				url: MONGODB_URL,
 			});
 
-			new DbPopulator({
-				databaseName: databaseName,
-				data: {
-					saluti: oneMilionOfObjects
-				}
-			}).execute().then(function() {
-				console.log('DbPopulator executed')
-				done()
-			})
-
-		})
+			fixtures.clearAllAndLoad({
+				saluti: oneMilionOfObjects,
+			}, done);
+		});
 
 		it('By field', function(done) {
-
-
 			dao.queryAsCursor('restfulMongo', 'saluti', {}, {}, {
-				batchSize: 100
+				batchSize: 100,
 			}, function(err, cursor) {
-				var lengthOfCursor = 0;
+				let lengthOfCursor = 0;
 
 				cursor.each(function(err, item) {
 					if (item == null) {
 						console.log('ola', lengthOfCursor);
-						expect(lengthOfCursor).to.be.eql(number)
-						expect(err).to.be.eql(null)
-						done()
+						expect(lengthOfCursor).to.be.eql(number);
+						expect(err).to.be.eql(null);
+						done();
 					} else {
-						lengthOfCursor++
+						lengthOfCursor++;
 					}
-
-				})
-
-			})
-		})
-	})
+				});
+			});
+		});
+	});
 
 	describe('DAO remove', function() {
-		var dataForRemove;
+		let dataForRemove;
 		beforeEach(function(done) {
 			dataForRemove = {
 				saluti: [{
@@ -194,32 +156,24 @@ describe.only('TEST', function() {
 				}, {
 					saluto: 'ciao',
 				}, {
-					saluto: 'ola'
-				}]
-			}
-			new DbPopulator({
-				databaseName: databaseName,
-				data: dataForRemove
-			}).execute().then(function() {
-				console.log('DbPopulator executed')
-				done()
-			})
-		})
+					saluto: 'ola',
+				}],
+			};
+			fixtures.clearAllAndLoad(dataForRemove, done);
+		});
 
 		it('Test remove more than one element', function(done) {
 			dao.remove('restfulMongo', 'saluti', {
-				saluto: 'ciao'
+				saluto: 'ciao',
 			}, {}, function(err, numberOfRemoved) {
-				expect(err).to.be.eql(null)
-				expect(numberOfRemoved).to.be.eql(2)
+				expect(err).to.be.eql(null);
+				expect(numberOfRemoved).to.be.eql(2);
 
 				dao.query('restfulMongo', 'saluti', {}, {}, {}, function(err, docs) {
-					expect(docs.length).to.be.eql(1)
-					done()
-				})
-			})
-		})
-
-	})
-
-})
+					expect(docs.length).to.be.eql(1);
+					done();
+				});
+			});
+		});
+	});
+});
