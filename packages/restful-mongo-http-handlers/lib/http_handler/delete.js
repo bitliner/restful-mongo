@@ -33,7 +33,9 @@ let _delete = function(req, res) {
     }
 
 
-    this.connectionPool.getDb(function(err, db) {
+    this.connectionPool.getDb({
+    	DATABASE_NAME:req.params.db,
+    },function(err, db) {
 	if (!err) {
 	    db.collection(req.params.collection, function(err, collection) {
 		if (justOne) {

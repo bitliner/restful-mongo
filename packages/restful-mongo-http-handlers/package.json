@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "LOG_LEVEL=debug mocha -t 10000 ./test/*.js"
+    "test": "LOG_LEVEL=debug NODE_ENV=mongodb://localhost:27017/test mocha -t 10000 ./test/*.js"
   },
   "repository": {
     "type": "git",

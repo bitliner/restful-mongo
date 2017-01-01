@@ -9,7 +9,7 @@ let RestfulMongoUtils = require('../');
 let bodyParser = require('body-parser');
 let data = require('./data/data');
 
-let mongoDbUrl = process.env.DB_URL;
+let mongoDbUrl = process.env.NODE_ENV;
 let databaseName = process.env.DB_NAME;
 let mongodbHost = process.env.MONGODB_HOST;
 let mongodbPort = process.env.MONGODB_PORT;
@@ -151,7 +151,7 @@ describe('restful-mongo-utils', function() {
 		});
 	});
 
-	describe.only('PUT', function() {
+	describe('PUT', function() {
 		let set;
 
 		beforeEach(function() {
@@ -165,7 +165,7 @@ describe('restful-mongo-utils', function() {
 		describe('when ObjectId is specified', function() {
 			it('should change name of the selected document', function(done) {
 				request(app)
-					.put('/api/local/users/571dcf6d265e5a69826b3160')
+					.put('/api/test/users/571dcf6d265e5a69826b3160')
 					.send({
 						update: set,
 					})
@@ -193,7 +193,7 @@ describe('restful-mongo-utils', function() {
 		describe('when ObjectId is not specified', function() {
 			it('should change the name of all the documents', function(done) {
 				request(app)
-					.put('/api/local/users/')
+					.put('/api/test/users/')
 					.send({
 						update: set,
 					})
@@ -214,7 +214,7 @@ describe('restful-mongo-utils', function() {
 		describe('when ObjectID is specified as string', function() {
 			it('should work anyway', function(done) {
 				request(app)
-					.put('/api/local/users/')
+					.put('/api/test/users/')
 					.send({
 						query: {
 							_id: 'ObjectId("571dcf6d265e5a69826b3160")',

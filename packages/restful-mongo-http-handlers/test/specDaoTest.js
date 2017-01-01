@@ -15,21 +15,23 @@ const data = {
 	}],
 };
 
-describe('TEST', function() {
+describe('Dao', function() {
 	let dao;
+	let databaseName;
 
 	beforeEach(function(done) {
 		dao = new Dao({
 			url: MONGODB_URL,
 		});
+		databaseName='test';
 
 		fixtures.clearAllAndLoad(data, done);
 	});
 
 
-	describe('DAO get', function() {
+	describe('get()', function() {
 		it('By field', function(done) {
-			dao.get('restfulMongo', 'saluti', {
+			dao.get(databaseName, 'saluti', {
 				saluto: 'ciao',
 			}, {}, {}, function(err, doc) {
 				expect(err).to.be.eql(null);
@@ -41,7 +43,7 @@ describe('TEST', function() {
 
 	describe('DAO query without hint', function() {
 		it('By field', function(done) {
-			dao.query('restfulMongo', 'saluti', {}, {}, {}, function(err, docs) {
+			dao.query(databaseName, 'saluti', {}, {}, {}, function(err, docs) {
 				expect(err).to.be.eql(null);
 				expect(docs.length).to.be.eql(2);
 				done();
@@ -51,7 +53,7 @@ describe('TEST', function() {
 
 	describe('DAO query with hint', function() {
 		it('By field', function(done) {
-			dao.query('restfulMongo', 'saluti', {}, {}, {
+			dao.query(databaseName, 'saluti', {}, {}, {
 				hint: {
 					saluto: 1,
 				},
@@ -66,7 +68,7 @@ describe('TEST', function() {
 	describe('DAO queryAsCursor without hint', function() {
 		it('By field', function(done) {
 			dao.queryAsCursor(
-				'restfulMongo', 'saluti', {}, {}, {},
+				databaseName, 'saluti', {}, {}, {},
 				function(err, cursor) {
 					let lengthOfCursor = 0;
 					cursor.each(function(err, item) {
@@ -85,7 +87,7 @@ describe('TEST', function() {
 	// TODO: check also if indexed are created
 	describe('DAO queryAsCursor with hint', function() {
 		it('By field', function(done) {
-			dao.queryAsCursor('restfulMongo', 'saluti', {}, {}, {
+			dao.queryAsCursor(databaseName, 'saluti', {}, {}, {
 				hint: {
 					saluto: 1,
 				},
@@ -128,7 +130,7 @@ describe('TEST', function() {
 		});
 
 		it('By field', function(done) {
-			dao.queryAsCursor('restfulMongo', 'saluti', {}, {}, {
+			dao.queryAsCursor(databaseName, 'saluti', {}, {}, {
 				batchSize: 100,
 			}, function(err, cursor) {
 				let lengthOfCursor = 0;
@@ -163,13 +165,13 @@ describe('TEST', function() {
 		});
 
 		it('Test remove more than one element', function(done) {
-			dao.remove('restfulMongo', 'saluti', {
+			dao.remove(databaseName, 'saluti', {
 				saluto: 'ciao',
 			}, {}, function(err, numberOfRemoved) {
 				expect(err).to.be.eql(null);
 				expect(numberOfRemoved).to.be.eql(2);
 
-				dao.query('restfulMongo', 'saluti', {}, {}, {}, function(err, docs) {
+				dao.query(databaseName, 'saluti', {}, {}, {}, function(err, docs) {
 					expect(docs.length).to.be.eql(1);
 					done();
 				});
