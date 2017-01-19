@@ -23,11 +23,11 @@ Handler.prototype.httpDelete = function () {
     return handlerHttpDelete.service();
 };
 
-Handler.prototype.httpGet = function () {
-    return handlerHttpGet.service();
+Handler.prototype.httpGet = ()=> {
+    return handlerHttpGet;
 };
 
-Handler.prototype.httpPost = function () {
+Handler.prototype.httpPost = ()=> {
     return handlerHttpPost.service();
 };
 

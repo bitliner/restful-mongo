@@ -1,15 +1,15 @@
 'use strict';
 
-var Logger = require('logb').getLogger(module.filename);
-var ObjectID = require('bson-objectid');
-var utils = require('../utils');
+let Logger = require('logb').getLogger(module.filename);
+let ObjectID = require('bson-objectid');
+let utils = require('../utils');
 
 function HandlerHttpDelete(connectionPool) {
     this.connectionPool = connectionPool;
 }
 
-var _delete = function(req, res) {
-    var spec, updateOne, rawQuery, justOne;
+let _delete = function(req, res) {
+    let spec, updateOne, rawQuery, justOne;
 
     updateOne = req.params.id ? true : false;
 
@@ -33,7 +33,9 @@ var _delete = function(req, res) {
     }
 
 
-    this.connectionPool.getDb(function(err, db) {
+    this.connectionPool.getDb({
+    	DATABASE_NAME:req.params.db,
+    },function(err, db) {
 	if (!err) {
 	    db.collection(req.params.collection, function(err, collection) {
 		if (justOne) {

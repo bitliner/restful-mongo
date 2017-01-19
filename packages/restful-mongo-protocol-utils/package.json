@@ -1,6 +1,6 @@
 {
   "name": "restful-mongo-protocol-utils",
-  "version": "0.1.0",
+  "version": "3.1.0",
   "description": "A set of utils to manage the communication protocol between client-server in a restful-mongo architecture.",
   "main": "restful-mongo-protocol-utils.js",
   "dependencies": {
@@ -9,7 +9,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "author": "wonderflow",
   "license": "ISC",

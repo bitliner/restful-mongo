@@ -1,30 +1,68 @@
 'use strict';
 
-var MongoClient = require('mongodb').MongoClient;
-var EventEmitter = new(require('events').EventEmitter)();
+let MongoClient = require('mongodb').MongoClient;
+let EventEmitter = new(require('events').EventEmitter)();
+let Logger = require('logb').getLogger(module.filename);
 
-var DATABASE = {};
-var database2IsInstantiatingAConnection = {};
+let DATABASE = {};
+let database2IsInstantiatingAConnection = {};
 
-function ConnectionPool(options) {
-    this.options = options || {};
-}
+/**
+ * Function to manage connection pool
+ */
+class ConnectionPool {
 
-ConnectionPool.prototype.getUrlFromOptions = function() {
-    console.log('options', this.options);
-    if (typeof this.options.url !== 'undefined') {
-        return this.options.url;
+    /**
+     * [constructor description]
+     * @param  {[type]} options [description]
+     */
+    constructor(options) {
+        Logger.debug('Creating ConnectionPool with options', options);
+        this.options = options || {};
     }
-    return this._getConnectionUrl();
-};
-ConnectionPool.prototype.getDb = function(cb) {
-    console.log('options', this.options);
-    var url = this.getUrlFromOptions();
 
-    if (typeof DATABASE[url] !== 'undefined') {
-        return cb(null, DATABASE[url]);
+    /**
+     * [getUrlFromOptions description]
+     * @param  {[type]} opts [description]
+     * @return {[type]}      [description]
+     */
+    getUrlFromOptions(opts) {
+        opts = opts || this.options;
+        console.log('options', this.options);
+        if (typeof opts.url !== 'undefined') {
+            return opts.url;
+        }
+        return this._getConnectionUrl(opts);
     }
-    if (typeof database2IsInstantiatingAConnection[url] !== 'undefined' && database2IsInstantiatingAConnection[url]) {
+
+    /**
+     * [getDb description]
+     * @param  {[type]}   opts [description]
+     * @param  {Function} cb   [description]
+     * @return {[type]}        [description]
+     */
+    getDb(opts, cb) {
+        let isConnectionCreated;
+        let url = this.getUrlFromOptions(opts);
+
+        Logger.debug('Getting DB whose url is', url);
+
+        if (typeof DATABASE[url] !== 'undefined') {
+            return cb(null, DATABASE[url]);
+        }
+        isConnectionCreated = database2IsInstantiatingAConnection[url];
+        if (isConnectionCreated) {
+            EventEmitter.once('connected', function(err, databaseUrl) {
+                if (err) {
+                    return;
+                }
+                if (databaseUrl === url) {
+                    return cb(null, DATABASE[url]);
+                }
+            });
+            return;
+        }
+        database2IsInstantiatingAConnection[url] = true;
         EventEmitter.once('connected', function(err, databaseUrl) {
             if (err) {
                 return;
@@ -33,62 +71,64 @@ ConnectionPool.prototype.getDb = function(cb) {
                 return cb(null, DATABASE[url]);
             }
         });
-        return;
+        this._connect(url, function(err, db) {
+            console.log('IN CONNECT - TO CREATE A CONNECTION');
+            DATABASE[url] = db;
+            EventEmitter.emit('connected', err, url);
+        });
     }
-    database2IsInstantiatingAConnection[url] = true;
-    EventEmitter.once('connected', function(err, databaseUrl) {
-        if (err) {
-            return;
+
+    /**
+     * [_connect description]
+     * @param  {[type]}   url [description]
+     * @param  {Function} cb  [description]
+     */
+    _connect(url, cb) {
+        MongoClient.connect(url, function(err, db) {
+            cb(err, db);
+        });
+    }
+
+    /**
+     * [_getConnectionUrl description]
+     * @param  {[type]} opts [description]
+     * @return {[type]}      [description]
+     */
+    _getConnectionUrl(opts) {
+        let options;
+        options = Object.assign({}, this.options);
+        Logger.debug('Dao options are', opts);
+        options = Object.assign(options, opts);
+        Logger.debug('Dao options are', options);
+        let url = (typeof options.USERNAME !== 'undefined') ? ['mongodb://', options.USERNAME + ':' + options.PASSWORD + '@'] : ['mongodb://'];
+
+        url.push((options.MONGODB_HOST || 'localhost') + ':');
+        url.push(options.PORT || '27017');
+
+        url.push('/' + options.DATABASE_NAME);
+
+        url = url.join('');
+
+        Logger.debug('_getConnectionUrl() -> URL is', url);
+        return url;
+    }
+
+    /**
+     * [closeDatabase description]
+     * @param  {[type]} db [description]
+     */
+    closeDatabase(db) {
+            db.close(function() {});
         }
-        if (databaseUrl === url) {
-            return cb(null, DATABASE[url]);
-        }
-    });
-    this._connect(function(err, db) {
-        console.log('IN CONNECT - TO CREATE A CONNECTION');
-        DATABASE[url] = db;
-        EventEmitter.emit('connected', err, url);
-    });
-
-};
-
-ConnectionPool.prototype._connect = function(cb) {
-    var url = this.getUrlFromOptions();
-    MongoClient.connect(url, function(err, db) {
-        cb(err, db);
-    });
-};
-
-ConnectionPool.prototype._getConnectionUrl = function() {
-
-    var url = (typeof this.options.USERNAME !== 'undefined') ? ['mongodb://', this.options.USERNAME + ':' + this.options.PASSWORD + '@'] : ['mongodb://'];
-
-    if (typeof this.options.MONGODB_HOST !== 'undefined') {
-        url.push(this.options.MONGODB_HOST + ':');
-    } else {
-        url.push('localhost:');
+        /**
+         * [closeAllDatabases description]
+         */
+    closeAllDatabases() {
+        Object.keys(DATABASE).forEach((k) => {
+            let db = DATABASE[k];
+            this.closeDatabase(db, k);
+        });
     }
-    if (typeof this.options.PORT !== 'undefined') {
-        url.push(this.options.PORT + ':');
-    } else {
-        url.push('27017');
-    }
-
-    url.push('/' + this.options.DATABASE_NAME);
-
-    url = url.join('');
-    return url;
-};
-
-ConnectionPool.prototype.closeDatabase = function closeDatabase(db) {
-    db.close(function() {});
-};
-
-ConnectionPool.prototype.closeAllDatabases = () => {
-    Object.keys(DATABASE).forEach((k) => {
-        var db = DATABASE[k];
-        this.closeDatabase(db, k);
-    });
-};
+}
 
 module.exports = ConnectionPool;

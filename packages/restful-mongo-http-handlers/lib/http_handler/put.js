@@ -105,7 +105,9 @@ var _put = function (req, res) {
 
     Logger.info('Running PUT', 'query', query, 'update', update, 'options', options);
 
-    this.connectionPool.getDb(function(err, db) {
+    this.connectionPool.getDb({
+    	DATABASE_NAME:req.params.db
+    },function(err, db) {
 	if (!err) {
 	    db.collection(req.params.collection, function(err, collection) {
 		if (updateOne) {
