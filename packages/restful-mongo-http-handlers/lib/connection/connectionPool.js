@@ -88,8 +88,10 @@ class ConnectionPool {
         if (isConnectionCreated) {
             EventEmitter.once('connected', function(err, databaseUrl) {
                 if (err) {
+                    Logger.info('Error while establishing connection', err);
                     return;
                 }
+                Logger.info('MongoClient - Connection established');
                 if (databaseUrl === url) {
                     return cb(null, DATABASE[url]);
                 }
@@ -99,8 +101,10 @@ class ConnectionPool {
         database2IsInstantiatingAConnection[url] = true;
         EventEmitter.once('connected', function(err, databaseUrl) {
             if (err) {
+                Logger.info('Error while establishing connection', err);
                 return;
             }
+            Logger.info('MongoClient - Connection established');
             if (databaseUrl === url) {
                 return cb(null, DATABASE[url]);
             }
@@ -118,6 +122,7 @@ class ConnectionPool {
      * @param  {Function} cb  [description]
      */
     _connect(url, cb) {
+        Logger.info('MongoClient - Connecting to', url);
         MongoClient.connect(url, function(err, db) {
             cb(err, db);
         });
