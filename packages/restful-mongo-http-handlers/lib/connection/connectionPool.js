@@ -6,6 +6,7 @@ let Logger = require('logb').getLogger(module.filename);
 
 let DATABASE = {};
 let database2IsInstantiatingAConnection = {};
+let mongodbUri = require('mongodb-uri');
 
 /**
  * Function to manage connection pool
@@ -17,8 +18,24 @@ class ConnectionPool {
      * @param  {[type]} options [description]
      */
     constructor(options) {
+        let uriObject;
+        let url;
+
         Logger.debug('Creating ConnectionPool with options', options);
+
         this.options = options || {};
+        url = options.url;
+
+        if (url) {
+            uriObject = mongodbUri.parse(url);
+
+            this.scheme = uriObject.scheme;
+            this.username = uriObject.username;
+            this.password = uriObject.password;
+            this.databaseName = uriObject.database;
+            this.host = uriObject.host[0].host;
+            this.port = uriObject.host[0].port;
+        }
     }
 
     /**
@@ -27,10 +44,25 @@ class ConnectionPool {
      * @return {[type]}      [description]
      */
     getUrlFromOptions(opts) {
+        let optsKeys;
+        let url;
+
         opts = opts || this.options;
         console.log('options', this.options);
         if (typeof opts.url !== 'undefined') {
             return opts.url;
+        }
+        optsKeys = Object.keys(opts);
+
+        if (optsKeys.length === 1 && optsKeys.indexOf('DATABASE_NAME') === 0) {
+            url = this._getConnectionUrl({
+                USERNAME: this.username,
+                PASSWORD: this.password,
+                MONGODB_HOST: this.host,
+                PORT: this.port,
+                DATABASE_NAME: opts.DATABASE_NAME,
+            });
+            return url;
         }
         return this._getConnectionUrl(opts);
     }

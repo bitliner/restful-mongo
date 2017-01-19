@@ -100,12 +100,12 @@ function _setPost(app) {
 
 function _setGetForCount(app) {
     var self = this;
-    app.get('/api/:db/:collection/count', self.handler.httpGet().count);
+    app.get('/api/:db/:collection/count', self.handler.httpGet().count.bind(self.handler.httpGet()));
 }
 
 function _setGetForDistinct(app) {
     var self = this;
-    app.get('/api/:db/:collection/distinct/:key', self.handler.httpGet().distinct);
+    app.get('/api/:db/:collection/distinct/:key', self.handler.httpGet().distinct.bind(self.handler.httpGet()));
 }
 
 function _setGet(app) {
@@ -114,7 +114,7 @@ function _setGet(app) {
          * Query
          */
     console.log('RESTful Mongo', 'Configuring GET')
-    app.get('/api/:db/:collection/:id?', self.handler.httpGet().get);
+    app.get('/api/:db/:collection/:id?', self.handler.httpGet().get.bind(self.handler.httpGet()));
 }
 
 function _setPut(app) {
@@ -124,7 +124,7 @@ function _setPut(app) {
     /**
      * Update
      */
-    app.put('/api/:db/:collection/:id?', self.handler.httpPut());
+    app.put('/api/:db/:collection/:id?', self.handler.httpPut().bind(self.handler.httpPut()));
 }
 
 function _setDel(app) {
