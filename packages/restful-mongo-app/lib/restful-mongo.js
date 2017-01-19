@@ -114,7 +114,7 @@ function _setGet(app) {
          * Query
          */
     console.log('RESTful Mongo', 'Configuring GET')
-    app.get('/api/:db/:collection/:id?', self.handler.httpGet().get);
+    app.get('/api/:db/:collection/:id?', self.handler.httpGet().get.bind(self.handler.httpGet()));
 }
 
 function _setPut(app) {
