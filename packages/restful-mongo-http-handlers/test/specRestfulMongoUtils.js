@@ -77,6 +77,33 @@ describe('restful-mongo-utils', function() {
 							done();
 						});
 				});
+
+				describe.only('when the query includes a regex', function() {
+					let rawQueryParameter;
+
+					beforeEach(function() {
+						rawQueryParameter = encodeURIComponent(JSON.stringify({
+							name: {
+								$regex: '/pluto/gi',
+							},
+						}));
+					});
+					it('should return the correct documents', function(done) {
+						request(app)
+							.get('/api/test/users?rawQuery=' + rawQueryParameter)
+							.expect(200)
+							.end(function(err, res) {
+								expect(err).to.equal(null);
+								expect(res.statusCode).to.equal(200);
+								expect(res.body.length).to.be.eql(2);
+								expect(res.body[1]).to.be.eql({
+									_id: '571dcf75265e5a69826b3162',
+									name: 'pluto',
+								});
+								done();
+							});
+					});
+				});
 			});
 
 			describe('/api/dbName/collectionName/ID', function() {
@@ -119,7 +146,8 @@ describe('restful-mongo-utils', function() {
 							expect(err).to.equal(null);
 							expect(res.statusCode).to.equal(200);
 							expect(res.body).to.be.a('string');
-							expect(res.body).to.equal(data.users.length.toString());
+							expect(res.body)
+								.to.equal(data.users.length.toString());
 							done();
 						});
 				});
