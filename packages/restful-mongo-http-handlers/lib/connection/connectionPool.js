@@ -33,8 +33,8 @@ class ConnectionPool {
             this.username = uriObject.username;
             this.password = uriObject.password;
             this.databaseName = uriObject.database;
-            this.host = uriObject.host[0].host;
-            this.port = uriObject.host[0].port;
+            this.host = uriObject.hosts[0].host;
+            this.port = uriObject.hosts[0].port;
         }
     }
 
