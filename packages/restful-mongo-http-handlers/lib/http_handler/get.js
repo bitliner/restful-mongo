@@ -183,6 +183,7 @@ class HandlerHttpGet {
 			if (containsRegex) {
 				Logger.info('Query contains fake regex...converting it...');
 				query = utils.convertFakeRegexInRegexObject(query);
+				console.log('remove me from http-handlers.get...');
 				Logger.info('Resulting query', {
 					query: JSON.stringify(query),
 				});
