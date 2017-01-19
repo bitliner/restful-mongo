@@ -36,6 +36,8 @@ class ConnectionPool {
             this.host = uriObject.hosts[0].host;
             this.port = uriObject.hosts[0].port;
         }
+
+        Logger.info('Options are', this);
     }
 
     /**
@@ -77,7 +79,7 @@ class ConnectionPool {
         let isConnectionCreated;
         let url = this.getUrlFromOptions(opts);
 
-        Logger.debug('Getting DB whose url is', url);
+        Logger.info('Getting DB whose url is', url);
 
         if (typeof DATABASE[url] !== 'undefined') {
             return cb(null, DATABASE[url]);
