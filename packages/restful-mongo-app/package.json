@@ -1,6 +1,6 @@
 {
   "name": "restful-mongo-app",
-  "version": "0.2.2",
+  "version": "0.2.6",
   "description": "It allows to add easily and quickly RESTful API to your nodejs app, to be used with MongoDB.",
   "main": "index.js",
   "directories": {

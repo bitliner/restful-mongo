@@ -1,6 +1,6 @@
 {
   "name": "restful-mongo-http-handlers",
-  "version": "0.2.4",
+  "version": "0.2.6",
   "description": "",
   "main": "index.js",
   "scripts": {
