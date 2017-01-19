@@ -1,6 +1,6 @@
 {
   "name": "restful-mongo-routes",
-  "version": "0.1.0",
+  "version": "3.1.0",
   "description": "It allows to add easily and quickly RESTful API to your nodejs app, to be used with MongoDB.",
   "main": "index.js",
   "directories": {

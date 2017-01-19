@@ -188,6 +188,8 @@ class HandlerHttpGet {
 				});
 			}
 		}
+
+		Logger.info('Parsing fields...');
 		if (req.query.fields) {
 			try {
 				req.query.fields = JSON.parse(req.query.fields);
@@ -199,6 +201,7 @@ class HandlerHttpGet {
 			}
 			fields = req.query.fields;
 		}
+		Logger.info('Parsing sort options...');
 		if (req.query.rawSort) {
 			try {
 				req.query.rawSort = JSON.parse(req.query.rawSort);
@@ -209,6 +212,7 @@ class HandlerHttpGet {
 			}
 			options.sort = req.query.rawSort;
 		}
+		Logger.info('Parsing options...');
 		if (req.query.rawOptions) {
 			try {
 				req.query.rawOptions = JSON.parse(req.query.rawOptions);
@@ -219,8 +223,8 @@ class HandlerHttpGet {
 			}
 			options = req.query.rawOptions;
 		}
-		console.log('------------>', req.params.db, req.params.collection);
 		if (req.params.id) {
+			Logger.info('Executing dao.get() ...');
 			this.dao.get(
 				req.params.db,
 				req.params.collection,
@@ -238,6 +242,7 @@ class HandlerHttpGet {
 					}
 				});
 		} else {
+			Logger.info('Executing dao.query() ...');
 			this.dao.query(
 				req.params.db,
 				req.params.collection,
