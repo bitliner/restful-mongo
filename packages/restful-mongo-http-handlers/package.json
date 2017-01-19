@@ -15,7 +15,8 @@
   "dependencies": {
     "bson-objectid": "^1.1.4",
     "logb": "^0.1.1",
-    "mongodb": "1.4.9"
+    "mongodb": "1.4.9",
+    "mongodb-uri": "*",
   },
   "devDependencies": {
     "body-parser": "^1.15.0",
