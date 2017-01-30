@@ -1,40 +1,37 @@
 'use strict';
 
-var Logger = require('logb').getLogger(module.filename);
-var mongo = require('mongodb');
-var BSON = mongo.BSONPure;
+let Logger = require('logb').getLogger(module.filename);
+let BSON = require('bson').BSONPure;
 
 function hasFakeObjectId(jsonObj) {
-    return JSON.stringify(jsonObj).indexOf('ObjectId') >= 0;
+	return JSON.stringify(jsonObj).indexOf('ObjectId') >= 0;
 };
 
 function convertFakeObjectId(query) {
-    Logger.info('Running convertFakeObjectId');
-    if (typeof value === 'object' && Array.isArray(query)) {
-	return query.map(function(el) {
-	    return convertFakeObjectId(el);
-	});
-    }
-    if (!query) {
-	return null;
-    }
-    Object.keys(query).forEach(function(key) {
-	var value;
-	value = query[key];
-	//Logger.info('-->', value);
-	if (typeof value === 'object') {
-	    query[key] = convertFakeObjectId(query[key]);
-	} else if (typeof value === 'string' && value.indexOf('ObjectId') >= 0) {
-	    // Logger.info('----->', 'found objectid', value)
-	    value = value.replace(/ObjectId\(./g, '');
-	    value = value.replace(/..$/g, '');
-	    // Logger.info('-----> 2', 'found objectid', value)
-	    query[key] = new BSON.ObjectID(value);
-	    Logger.info('Converted', query[key], query[key].constructor.name);
+	Logger.info('Running convertFakeObjectId');
+	if (typeof value === 'object' && Array.isArray(query)) {
+		return query.map(function(el) {
+			return convertFakeObjectId(el);
+		});
 	}
-    });
-    //console.log('1111',typeof query._id)
-    return query;
+	if (!query) {
+		return null;
+	}
+	Object.keys(query).forEach(function(key) {
+		let value;
+		value = query[key];
+		if (typeof value === 'object') {
+			query[key] = convertFakeObjectId(query[key]);
+		} else if (typeof value === 'string' && value.indexOf('ObjectId') >= 0) {
+			// Logger.info('----->', 'found objectid', value)
+			value = value.replace(/ObjectId\(./g, '');
+			value = value.replace(/..$/g, '');
+			// Logger.info('-----> 2', 'found objectid', value)
+			query[key] = new BSON.ObjectID(value);
+			Logger.info('Converted', query[key], query[key].constructor.name);
+		}
+	});
+	return query;
 };
 
 function convertFakeRegexInRegexObject(query) {
@@ -48,9 +45,11 @@ function convertFakeRegexInRegexObject(query) {
 		return null;
 	}
 	Object.keys(query).forEach(function(key) {
-		var value;
+		let value;
 
-		var modifier, regex, tmp;
+		let modifier;
+		let regex;
+		let tmp;
 
 		value = query[key];
 
@@ -92,36 +91,31 @@ function unescapeMongoDbModifiers(obj) {
 };
 
 function convertFakeObjectIdInObjectId(query) {
-    Logger.info('Runnin convertFakeObjectIdInObjectId');
-    if (typeof value === 'object' && Array.isArray(query)) {
-	return query.map(function(el) {
-	    return convertFakeObjectIdInObjectId(el);
-	});
-    }
-    if (!query) {
-	return null;
-    }
-    Object.keys(query).forEach(function(key) {
-	var value;
-	value = query[key];
-	//Logger.info('-->', value);
-	if (typeof value === 'object') {
-	    query[key] = convertFakeObjectIdInObjectId(query[key]);
-	} else if (typeof value === 'string' && value.indexOf('ObjectId') >= 0) {
-	    // Logger.info('----->', 'found objectid', value)
-	    value = value.replace(/ObjectId\(./g, '');
-	    value = value.replace(/..$/g, '');
-	    // Logger.info('-----> 2', 'found objectid', value)
-	    query[key] = new BSON.ObjectID(value);
-	    //Logger.info('Converted', query[key], query[key].constructor.name);
+	Logger.info('Runnin convertFakeObjectIdInObjectId');
+	if (typeof value === 'object' && Array.isArray(query)) {
+		return query.map(function(el) {
+			return convertFakeObjectIdInObjectId(el);
+		});
 	}
-    });
-    return query;
+	if (!query) {
+		return null;
+	}
+	Object.keys(query).forEach(function(key) {
+		let value;
+		value = query[key];
+		if (typeof value === 'object') {
+			query[key] = convertFakeObjectIdInObjectId(query[key]);
+		} else if (typeof value === 'string' && value.indexOf('ObjectId') >= 0) {
+			value = value.replace(/ObjectId\(./g, '');
+			value = value.replace(/..$/g, '');
+			query[key] = new BSON.ObjectID(value);
+		}
+	});
+	return query;
 }
 
 function mergeRecursive(obj1, obj2) {
-
-	for (var p in obj2) {
+	for (let p in obj2) {
 		try {
 			// Property in destination object set; update its value.
 			if (obj2[p].constructor === Object) {
@@ -143,28 +137,28 @@ function mergeRecursive(obj1, obj2) {
 };
 
 function convertIsoDateInDate(query) {
-    Logger.info('Runnin convertIsoDateInDate');
-    if (typeof value === 'object' && Array.isArray(query)) {
-	return query.map(function(el) {
-	    return convertIsoDateInDate(el);
-	});
-    }
-    if (!query) {
-	return null;
-    }
-    //Logger.info('--------------------------------->', query)
-    Object.keys(query).forEach(function(key) {
-	var value;
-	value = query[key];
-	if (typeof value === 'object') {
-	    query[key] = convertIsoDateInDate(query[key]);
-	} else if (typeof value === 'string' && value.indexOf('ISODate') >= 0) {
-	    value = value.replace(/ISODate\(./g, '');
-	    value = value.replace(/..$/g, '');
-	    query[key] = new Date(value);
+	Logger.info('Runnin convertIsoDateInDate');
+	if (typeof value === 'object' && Array.isArray(query)) {
+		return query.map(function(el) {
+			return convertIsoDateInDate(el);
+		});
 	}
-    });
-    return query;
+	if (!query) {
+		return null;
+	}
+	//Logger.info('--------------------------------->', query)
+	Object.keys(query).forEach(function(key) {
+		let value;
+		value = query[key];
+		if (typeof value === 'object') {
+			query[key] = convertIsoDateInDate(query[key]);
+		} else if (typeof value === 'string' && value.indexOf('ISODate') >= 0) {
+			value = value.replace(/ISODate\(./g, '');
+			value = value.replace(/..$/g, '');
+			query[key] = new Date(value);
+		}
+	});
+	return query;
 }
 
 module.exports.hasFakeObjectId = hasFakeObjectId;

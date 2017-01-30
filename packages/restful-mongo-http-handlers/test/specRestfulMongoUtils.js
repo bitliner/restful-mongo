@@ -24,7 +24,7 @@ let mongoUtils = new MongoUtils({
 	DB_URL: mongoDbUrl,
 });
 
-let fixtures = require('pow-mongodb-fixtures').connect('test');
+let fixtures = require('mongo-fixme').connect('test');
 
 describe('restful-mongo-utils', function() {
 	let app;
@@ -96,10 +96,7 @@ describe('restful-mongo-utils', function() {
 								expect(err).to.equal(null);
 								expect(res.statusCode).to.equal(200);
 								expect(res.body.length).to.be.eql(2);
-								expect(res.body[1]).to.be.eql({
-									_id: '571dcf75265e5a69826b3162',
-									name: 'pluto',
-								});
+								expect(res.body[1].name).to.be.eql('pluto');
 								done();
 							});
 					});
