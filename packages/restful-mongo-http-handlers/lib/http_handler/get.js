@@ -1,4 +1,4 @@
-let BSON = require('mongodb').BSONPure;
+let ObjectId = require('mongodb').ObjectID;
 let Logger = require('logb').getLogger(module.filename);
 let utils = require('../utils');
 
@@ -144,7 +144,7 @@ class HandlerHttpGet {
 		// Providing an id overwrites giving a query in the URL
 		if (req.params.id) {
 			query = {
-				'_id': new BSON.ObjectID(req.params.id),
+				'_id': new ObjectId(req.params.id),
 			};
 		}
 		let options = req.params.options || {};

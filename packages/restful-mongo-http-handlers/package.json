@@ -15,7 +15,7 @@
   "dependencies": {
     "bson-objectid": "^1.1.4",
     "logb": "^0.1.1",
-    "mongodb": "^2.2.21 ",
+    "mongodb": "^2.2.21",
     "mongodb-uri": "*"
   },
   "devDependencies": {
@@ -24,6 +24,7 @@
     "deferred": "^0.7.5",
     "express": "^4.13.4",
     "mongo-fixme": "*",
+    "mongodb_fixtures": "^1.0.0",
     "supertest": "^1.2.0"
   }
 }

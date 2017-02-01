@@ -24,7 +24,7 @@ let mongoUtils = new MongoUtils({
 	DB_URL: mongoDbUrl,
 });
 
-let fixtures = require('mongo-fixme').connect('test');
+let fixtures = require('mongodb_fixtures').connect('test');
 
 describe('restful-mongo-utils', function() {
 	let app;
@@ -78,7 +78,7 @@ describe('restful-mongo-utils', function() {
 						});
 				});
 
-				describe.only('when the query includes a regex', function() {
+				describe('when the query includes a regex', function() {
 					let rawQueryParameter;
 
 					beforeEach(function() {
@@ -250,7 +250,9 @@ describe('restful-mongo-utils', function() {
 					.end(function(err, res) {
 						expect(err).to.equal(null);
 						expect(res.statusCode).to.equal(200);
-						expect(res.body).to.be.eql(1);
+						expect(res.body.n).to.be.eql(1);
+						expect(res.body.nModified).to.be.eql(1);
+						expect(res.body.ok).to.be.eql(1);
 						mongoUtils.query('users', {}, function(err, docs) {
 							console.log('docs', JSON.stringify(docs));
 							expect(docs[0].name).to.equal('newName');

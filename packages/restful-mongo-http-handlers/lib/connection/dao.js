@@ -244,8 +244,8 @@ class Dao extends ConnectionPool {
          */
     count(dbName, collectionName, query, options, cb) {
             this.getDb({
-                DATABASE_NAME:dbName
-            },function(err, db) {
+                DATABASE_NAME: dbName
+            }, function(err, db) {
                 if (!err) {
                     db.collection(collectionName, function(err, collection) {
                         collection.find(query, options).count(function(err, count) {
@@ -276,6 +276,7 @@ class Dao extends ConnectionPool {
                         if (err) {
                             return done(err, null, cb);
                         }
+                        numberOfRemoved = numberOfRemoved.result.n;
                         console.log('DAO: number of removed is', numberOfRemoved);
                         return done(err, numberOfRemoved, cb);
                     });

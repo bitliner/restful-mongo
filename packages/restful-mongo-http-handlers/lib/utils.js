@@ -1,7 +1,7 @@
 'use strict';
 
 let Logger = require('logb').getLogger(module.filename);
-let BSON = require('bson').BSONPure;
+let ObjectID = require('mongodb').ObjectID;
 
 function hasFakeObjectId(jsonObj) {
 	return JSON.stringify(jsonObj).indexOf('ObjectId') >= 0;
@@ -27,7 +27,7 @@ function convertFakeObjectId(query) {
 			value = value.replace(/ObjectId\(./g, '');
 			value = value.replace(/..$/g, '');
 			// Logger.info('-----> 2', 'found objectid', value)
-			query[key] = new BSON.ObjectID(value);
+			query[key] = new ObjectID(value);
 			Logger.info('Converted', query[key], query[key].constructor.name);
 		}
 	});
@@ -108,7 +108,7 @@ function convertFakeObjectIdInObjectId(query) {
 		} else if (typeof value === 'string' && value.indexOf('ObjectId') >= 0) {
 			value = value.replace(/ObjectId\(./g, '');
 			value = value.replace(/..$/g, '');
-			query[key] = new BSON.ObjectID(value);
+			query[key] = new ObjectID(value);
 		}
 	});
 	return query;
@@ -119,20 +119,16 @@ function mergeRecursive(obj1, obj2) {
 		try {
 			// Property in destination object set; update its value.
 			if (obj2[p].constructor === Object) {
-				obj1[p] = this.mergeRecursive(obj1[p], obj2[p]);
-
+				obj1[p] = mergeRecursive(obj1[p], obj2[p]);
 			} else {
 				obj1[p] = obj2[p];
-
 			}
-
 		} catch (e) {
-			// Property in destination object not set; create it and set its value.
+			// Property in destination object not set;
+			// create it and set its value.
 			obj1[p] = obj2[p];
-
 		}
 	}
-
 	return obj1;
 };
 
@@ -146,7 +142,6 @@ function convertIsoDateInDate(query) {
 	if (!query) {
 		return null;
 	}
-	//Logger.info('--------------------------------->', query)
 	Object.keys(query).forEach(function(key) {
 		let value;
 		value = query[key];

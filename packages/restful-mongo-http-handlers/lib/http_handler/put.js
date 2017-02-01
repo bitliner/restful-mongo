@@ -122,7 +122,7 @@ var _put = function (req, res) {
 			    Logger.error('Error, PUT', err);
 			    return res.json(500, err);
 			}
-			res.status(200).json(doc);
+			res.status(200).json(doc.value);
 		    });
 		} else {
 		    return collection.update(query, update, {

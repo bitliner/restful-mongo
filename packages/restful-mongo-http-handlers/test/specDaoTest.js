@@ -2,7 +2,7 @@
 
 const expect = require('chai').expect;
 const Dao = require('../lib/connection/dao');
-const fixtures = require('pow-mongodb-fixtures').connect('test');
+const fixtures = require('mongodb_fixtures').connect('test');
 
 const MONGODB_URL = process.env.NODE_ENV || 'mongodb://localhost:27017/test';
 
@@ -23,7 +23,7 @@ describe('Dao', function() {
 		dao = new Dao({
 			url: MONGODB_URL,
 		});
-		databaseName='test';
+		databaseName = 'test';
 
 		fixtures.clearAllAndLoad(data, done);
 	});
