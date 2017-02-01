@@ -75,6 +75,7 @@ let _query = function(req, res) {
     containsIsoDate = JSON.stringify(query).indexOf('ISODate') >= 0;
     containsRegex = JSON.stringify(query).indexOf('$regex') >= 0;
 
+
     if (containsFakeObjectId) {
         Logger.info('Query contains fake objectIds');
         query = utils.convertFakeObjectIdInObjectId(query);

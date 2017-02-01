@@ -87,6 +87,7 @@ function unescapeMongoDbModifiers(obj) {
 		.replace(/\+\$where/g, '$where')
 		.replace(/\+\$elemMatch/g, '$elemMatch')
 		.replace(/\+\$regex/g, '$regex')
+		.replace(/\+\$or/g, '$or')
 	);
 };
 

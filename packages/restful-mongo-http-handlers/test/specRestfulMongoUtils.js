@@ -53,6 +53,7 @@ describe('restful-mongo-utils', function() {
 			handler.httpGet().get.bind(handler.httpGet()));
 		app.get('/api/:db/:collection/distinct/:key',
 			handler.httpGet().distinct.bind(handler.httpGet()));
+		app.post('/api/:db/:collection/query', handler.httpPost().query);
 		app.post('/api/:db/:collection', handler.httpPost().post);
 		// TODO: make test to query, distinct, count service post methods
 		fixtures.clearAndLoad(data, done);
@@ -113,6 +114,7 @@ describe('restful-mongo-utils', function() {
 							expect(res.statusCode).to.equal(200);
 							expect(res.body).to.be.eql({
 								_id: '571dcf6d265e5a69826b3160',
+								date: '1970-02-01T12:31:11.153Z',
 								name: 'pippo',
 							});
 							done();
@@ -147,6 +149,40 @@ describe('restful-mongo-utils', function() {
 								.to.equal(data.users.length.toString());
 							done();
 						});
+				});
+			});
+		});
+
+		describe('via POST', function() {
+			describe('/api/dbName/collectionName/query/', function() {
+				describe('when the query includes ISODate as string', function() {
+					let query;
+
+					describe('when the query includes $or operator', function() {
+						beforeEach(function() {
+							query = {
+								'+$or': [{
+									date: {
+										'+$lte': 'ISODate(\'2013-07-01T12:00:00.000Z\')',
+									},
+								}],
+							};
+						});
+						it('should return the correct documents', function(done) {
+							request(app)
+								.post('/api/test/users/query')
+								.send({
+									query: query,
+								})
+								.expect(200)
+								.end(function(err, res) {
+									expect(err).to.equal(null);
+									expect(res.statusCode).to.equal(200);
+									expect(res.body.length).to.be.eql(2);
+									done();
+								});
+						});
+					});
 				});
 			});
 		});
@@ -201,6 +237,7 @@ describe('restful-mongo-utils', function() {
 						expect(res.statusCode).to.equal(200);
 						expect(res.body).to.be.eql({
 							_id: '571dcf6d265e5a69826b3160',
+							date: '1970-02-01T12:31:11.153Z',
 							name: 'newName',
 						});
 						mongoUtils.query('users', {}, function(err, docs) {
