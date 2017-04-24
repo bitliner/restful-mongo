@@ -101,7 +101,7 @@ var _put = function (req, res) {
     update = Parser.parseUpdate(req);
     options = Parser.parseOptions(req);
 
-    console.log(typeof query._id)
+    
 
     Logger.info('Running PUT', 'query', query, 'update', update, 'options', options);
 

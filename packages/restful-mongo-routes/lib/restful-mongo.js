@@ -91,7 +91,7 @@ function _setPostForDistinct(app) {
 
 function _setPost(app) {
     var self = this
-    console.log('RESTful Mongo', 'Configuring POST')
+    
     /**
      * Insert
      */
@@ -113,13 +113,13 @@ function _setGet(app) {
         /**
          * Query
          */
-    console.log('RESTful Mongo', 'Configuring GET')
+    
     app.get('/api/:db/:collection/:id?', self.handler.httpGet().get);
 }
 
 function _setPut(app) {
     var self = this
-    console.log('RESTful Mongo', 'Configuring PUT')
+    
 
     /**
      * Update
@@ -129,7 +129,7 @@ function _setPut(app) {
 
 function _setDel(app) {
     var self = this
-    console.log('RESTful Mongo', 'Configuring DEL')
+    
 
     /**
      * Delete

@@ -14,10 +14,10 @@ let databaseName = process.env.DB_NAME;
 let mongodbHost = process.env.MONGODB_HOST;
 let mongodbPort = process.env.MONGODB_PORT;
 
-// console.log('mongoDbUrl', mongoDbUrl)
-// console.log('databaseName', databaseName)
-// console.log('mongodbHost', mongodbHost)
-// console.log('mongodbPort', mongodbPort)
+// 
+// 
+// 
+// 
 
 
 let mongoUtils = new MongoUtils({
@@ -241,7 +241,7 @@ describe('restful-mongo-utils', function() {
 							name: 'newName',
 						});
 						mongoUtils.query('users', {}, function(err, docs) {
-							console.log('docs', JSON.stringify(docs));
+							
 							expect(docs[0].name).to.equal('newName');
 							docs.slice(0).forEach(function(doc) {
 								expect(doc).to.not.equal('newName');
@@ -291,7 +291,7 @@ describe('restful-mongo-utils', function() {
 						expect(res.body.nModified).to.be.eql(1);
 						expect(res.body.ok).to.be.eql(1);
 						mongoUtils.query('users', {}, function(err, docs) {
-							console.log('docs', JSON.stringify(docs));
+							
 							expect(docs[0].name).to.equal('newName');
 							docs.slice(0).forEach(function(doc) {
 								expect(doc).to.not.equal('newName');

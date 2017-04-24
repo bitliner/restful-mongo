@@ -29,7 +29,7 @@ class Dao extends ConnectionPool {
         }, function(err, db) {
             if (!err) {
                 db.collection(collectionName, function(err, collection) {
-                    // console.log('q stringified', JSON.stringify(query));
+                    // 
                     Logger.info('Query', {
                         db: dbName,
                         collection: collectionName,
@@ -80,7 +80,7 @@ class Dao extends ConnectionPool {
         coll.find(query, fields, options, function(err, cursor) {
             cursor.toArray(function(err, docs) {
                 // TODO: replace with Logger
-                console.log('DOCs', coll.collectionName, query, docs);
+                
                 done(err, docs, cb);
             });
         });
@@ -277,7 +277,7 @@ class Dao extends ConnectionPool {
                             return done(err, null, cb);
                         }
                         numberOfRemoved = numberOfRemoved.result.n;
-                        console.log('DAO: number of removed is', numberOfRemoved);
+                        
                         return done(err, numberOfRemoved, cb);
                     });
                 });

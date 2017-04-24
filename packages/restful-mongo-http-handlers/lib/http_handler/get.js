@@ -138,8 +138,8 @@ class HandlerHttpGet {
 		let isThereRawQuery;
 
 		query = req.query.query ? JSON.parse(req.query.query) : {};
-		// console.log(query);
-		// console.log('req.query', req.query);
+		// 
+		// 
 
 		// Providing an id overwrites giving a query in the URL
 		if (req.params.id) {
@@ -183,7 +183,7 @@ class HandlerHttpGet {
 			if (containsRegex) {
 				Logger.info('Query contains fake regex...converting it...');
 				query = utils.convertFakeRegexInRegexObject(query);
-				console.log('remove me from http-handlers.get...');
+				
 				Logger.info('Resulting query', {
 					query: JSON.stringify(query),
 				});
@@ -195,7 +195,7 @@ class HandlerHttpGet {
 			try {
 				req.query.fields = JSON.parse(req.query.fields);
 			} catch (e) {
-				console.log('Error parsin json', 'fields', req.query.fields);
+				
 				return res.json(500, {
 					error: 'Error parsing json',
 				});

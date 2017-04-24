@@ -50,7 +50,7 @@ class ConnectionPool {
         let url;
 
         opts = opts || this.options;
-        console.log('options', this.options);
+        
         if (typeof opts.url !== 'undefined') {
             return opts.url;
         }
@@ -110,7 +110,7 @@ class ConnectionPool {
             }
         });
         this._connect(url, function(err, db) {
-            console.log('IN CONNECT - TO CREATE A CONNECTION');
+            
             DATABASE[url] = db;
             EventEmitter.emit('connected', err, url);
         });
